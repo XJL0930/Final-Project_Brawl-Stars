@@ -60,6 +60,7 @@ bool ChoiceAI::init()
                                            "Scene/Room_AI/start_0.png",
                                            CC_CALLBACK_1(ChoiceAI::menuEnterCallback, this));
 
+    //ÎªÁË×¢ÊÍ¶ø×¢ÊÍ
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
         closeItem->getContentSize().height <= 0)
@@ -170,12 +171,6 @@ bool ChoiceAI::init()
 
 void ChoiceAI::menuEnterCallback(Ref* pSender)
 {
-    //Close the cocos2d-x game scene and quit the application
     auto battleScene = BattleScene::create();
     Director::getInstance()->replaceScene(battleScene->createScene());
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
 }
