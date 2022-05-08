@@ -145,8 +145,8 @@ void StartGame::menuEnterCallback(Ref* pSender)
 {
 	// 当按下“进入游戏“，会进入下一个场景，记得关闭当前场景的音乐
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	auto battleScene = BattleScene::create();
-	Director::getInstance()->replaceScene(battleScene->createScene());
+	auto choiceAi = ChoiceAI::create();
+	Director::getInstance()->replaceScene(choiceAi);
 }
 void StartGame::menuCloseCallback(Ref* pSender)
 {
