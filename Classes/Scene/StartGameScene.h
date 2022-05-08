@@ -4,6 +4,7 @@
 
 #include "cocos2d.h"
 #include "BattleScene.h"
+#include "Choice_ai.h"
 #include "cocostudio\SimpleAudioEngine.h"
 USING_NS_CC;
 using namespace CocosDenshion;

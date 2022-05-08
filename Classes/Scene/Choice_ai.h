@@ -22,12 +22,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
-
+#ifndef __CHOICE_AI_H__
+#define __CHOICE_AI_H__
 #include "cocos2d.h"
 
-class HelloWorld : public cocos2d::Scene
+class ChoiceAI : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
@@ -35,10 +34,10 @@ public:
     virtual bool init();
     
     // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
+    void menuEnterCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(ChoiceAI);
 };
 
-#endif // __HELLOWORLD_SCENE_H__
+#endif // __CHOICE_AI_H__
