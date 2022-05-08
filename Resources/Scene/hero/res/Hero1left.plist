@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>Hero1_left_1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2.5,1.5}</string>
+                <key>spriteSize</key>
+                <string>{49,51}</string>
+                <key>spriteSourceSize</key>
+                <string>{54,56}</string>
+                <key>textureRect</key>
+                <string>{{101,1},{49,51}}</string>
+                <key>textureRotated</key>
+                <false/>
+                <key>triangles</key>
+                <string>2 3 4 1 2 4 0 1 4</string>
+                <key>vertices</key>
+                <string>49 52 29 52 2 27 0 1 49 1</string>
+                <key>verticesUV</key>
+                <string>150 52 130 52 103 27 101 1 150 1</string>
+            </dict>
+            <key>Hero1_left_2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-2.5,0}</string>
+                <key>spriteSize</key>
+                <string>{48,54}</string>
+                <key>spriteSourceSize</key>
+                <string>{55,56}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{48,54}}</string>
+                <key>textureRotated</key>
+                <false/>
+                <key>triangles</key>
+                <string>3 4 5 2 3 5 0 1 2 0 2 5</string>
+                <key>vertices</key>
+                <string>49 9 49 55 24 52 2 30 1 17 33 1</string>
+                <key>verticesUV</key>
+                <string>49 9 49 55 24 52 2 30 1 17 33 1</string>
+            </dict>
+            <key>Hero1_left_3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-3,0.5}</string>
+                <key>spriteSize</key>
+                <string>{48,51}</string>
+                <key>spriteSourceSize</key>
+                <string>{54,56}</string>
+                <key>textureRect</key>
+                <string>{{152,1},{48,51}}</string>
+                <key>textureRotated</key>
+                <false/>
+                <key>triangles</key>
+                <string>1 4 5 2 3 4 1 2 4 0 1 5</string>
+                <key>vertices</key>
+                <string>48 53 28 53 1 28 0 15 28 2 48 2</string>
+                <key>verticesUV</key>
+                <string>200 52 180 52 153 27 152 14 180 1 200 1</string>
+            </dict>
+            <key>Hero1_left_4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-3,1.5}</string>
+                <key>spriteSize</key>
+                <string>{48,53}</string>
+                <key>spriteSourceSize</key>
+                <string>{54,56}</string>
+                <key>textureRect</key>
+                <string>{{51,1},{48,53}}</string>
+                <key>textureRotated</key>
+                <false/>
+                <key>triangles</key>
+                <string>3 4 5 2 3 5 0 1 2 0 2 5</string>
+                <key>vertices</key>
+                <string>48 8 48 53 23 53 1 31 0 16 32 0</string>
+                <key>verticesUV</key>
+                <string>99 9 99 54 74 54 52 32 51 17 83 1</string>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>Hero1left.png</string>
+            <key>size</key>
+            <string>{201,56}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:a7295fe4ec3dc7768e5afbcdaa5422a4:694faa098465a6ae65a89f96a79627fc:e287b8128673ae5bd159d45b5a386876$</string>
+            <key>textureFileName</key>
+            <string>Hero1left.png</string>
+        </dict>
+    </dict>
+</plist>
