@@ -1,4 +1,5 @@
 #include"BattleScene.h"
+#include "HeroMove.h"
 
 BattleScene* BattleScene::create(int testIndex /* = 1 */)
 {
@@ -54,4 +55,5 @@ BattleScene::BattleScene(std::string mapname/*»¹Òª¼ÌÐø¼ÓÈëÈËÎïÀàµÄdata memberµÄ³
 	this->meta_barrier->setVisible(false);
 	this->meta_grass = battlemap->getLayer("meta_grass");
 	this->meta_grass->setVisible(false);
+	HeroMove::createHero();
 };
