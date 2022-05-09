@@ -15,6 +15,7 @@ public:
 	static BattleScene* create(int testIndx = 1);
 	//用来将物理碰撞引入Scene
 	Scene* createScene();
+	
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;

@@ -12,12 +12,19 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
-
-// on "init" you need to initialize your instance
-bool HeroMove::init()
+Sprite*HeroMove::createHero()
 {
-
-    if (!Scene::init())return false;
+    Sprite* creat = Sprite::create("Scene/hero/Hero1.png");
+   
+    if (creat == nullptr)
+    {
+        problemLoading("'Scene/hero/Hero1.png'");
+    }
+   
+   return creat;
+}
+bool HeroMove::initWithHero()
+{
 
     //每0.1妙调用一下，
     this->schedule(CC_SCHEDULE_SELECTOR(HeroMove::update),0.1f);
@@ -26,30 +33,11 @@ bool HeroMove::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();//获得可视区域出发点的坐标
 
-    
+   
 
-
-    auto background = Sprite::create("bg.png");
-    if (background == nullptr)
-    {
-        problemLoading("'bg.png'");
-    }
-    else
-    {
-
-        background->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-       
-        // add the sprite as a child to this layer
-        this->addChild(background, 0);
-    }
-
-    Hero = Sprite::create("Hero1.png");
-    if (Hero == nullptr)
-    {
-        problemLoading("'Hero1.png'");
-    }
-    this->addChild(Hero);
-    Hero->setPosition(StartPosX, StartPosY);
+    Hero = createHero();
+    Hero->addChild(Hero);
+    Hero->setPosition(100, 300);
     
     auto keyListener = EventListenerKeyboard::create();
     keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {

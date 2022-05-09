@@ -18,6 +18,7 @@ Actor* Actor::create()
 bool Actor::init()
 {
     // Actor的初始化需要初始化参数，包括初始化血量，宝石个数...
+    get_
     return false;
 }
 
