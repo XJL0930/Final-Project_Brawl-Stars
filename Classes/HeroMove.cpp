@@ -1,5 +1,5 @@
 #include "HeroMove.h"
-#include"MyAnimation.h"
+#include "Actor\MyAnimate.h"
 
 #define MaxFileName 100
 #define PerLength 30
@@ -58,7 +58,7 @@ bool HeroMove::initWithHero()
     return true;
 }
 
-void HeroMove::update(float delta)
+/*void HeroMove::update(float delta)
 {
     Animate* walk_back = MyAnimation::creatHeroWalkAnimation(1, "back", 4);
     Animate* walk_left = MyAnimation::creatHeroWalkAnimation(1, "left", 4);
@@ -95,4 +95,4 @@ void HeroMove::update(float delta)
         auto moveBy = MoveBy::create(0.1f, Vec2(0, 10));
         Hero->runAction(Spawn::createWithTwoActions(moveBy, walk_forward));
     }
-}
+}*/

@@ -3,6 +3,7 @@
 
 #include<cocos2d.h>
 #include<string>
+#include"Actor\Player.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
@@ -15,10 +16,13 @@ public:
 	static BattleScene* create(int testIndx = 1);
 	//用来将物理碰撞引入Scene
 	Scene* createScene();
+	void bindPlayer(Player* _player);
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
+private:
+	Player* my_player=nullptr;
 };
 
 
