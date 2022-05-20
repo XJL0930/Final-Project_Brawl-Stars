@@ -7,5 +7,4 @@ using namespace cocos2d;
 class Shirley : public Hero {
 public:
 	Shirley();
-
 };

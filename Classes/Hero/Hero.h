@@ -1,13 +1,15 @@
 #pragma once
-#ifndef __ACTOR__H__
-#define __ACTOR__H__
+#ifndef __HERO_H_
+#define __HERO_H_
 #include "cocos2d.h"
+#include "Actor\MyAnimate.h"
 USING_NS_CC;
 class Hero
 {
 public:
 
 protected:
+	CC_SYNTHESIZE(std::string, heroName, _heroName);
 	CC_SYNTHESIZE(INT32, speed, _speed);
 	CC_SYNTHESIZE(INT32,attackDistance, _attackDistance);
 	CC_SYNTHESIZE(INT32, hp, _hp);
@@ -18,13 +20,18 @@ protected:
 	CC_SYNTHESIZE(INT32, bulletSpeed, _bulletSpeed);
 	CC_SYNTHESIZE(INT32, id, _id);
 	CC_SYNTHESIZE(float,skillCD,_skillCD); 
-	/*用于代表动画的类
-	my_Animate* left;
-	my_Animate* right;
-	my_Animate* up;
-	my_Animate*down;
-
-	*/
+	/*用于代表动画的类*/
+	Animate* left_animate;
+	Animate* right_animate;
+	Animate* up_animate;
+	Animate* down_animate;
+	Animate* stand_left;
+	Animate* stand_right;
+	Animate* stand_up;
+	Animate* stand_down;
+	Animate* getLeftAnimate()const { return left_animate; };
+	Animate* getRightAnimate()const { return right_animate; };
+	Animate* getUpAnimate()const { return up_animate; };
+	Animate* getDownAnimate()const { return down_animate; };
 };
-
-#endif // !__ACTOR__H__
+#endif // 
