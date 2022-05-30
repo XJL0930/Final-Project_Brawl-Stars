@@ -46,9 +46,10 @@ Scene* BattleScene::createScene()
 		scene->getPhysicsWorld()->setAutoStep(true);
 		scene->getPhysicsWorld()->setGravity(cocos2d::Vec2::ZERO);
 		scene->retain();
-		my_player->setPosition(200, 300);
+		//my_player->setPosition(200, 300);
 		this->addChild(my_player);
 		my_player->move();
+
 		return scene;
 	}
 	return nullptr;
@@ -60,8 +61,6 @@ void BattleScene::bindPlayer(Player* _player)
 	if (_player == nullptr && my_player == nullptr)
 	{
 		my_player = _player;
-		my_player->setPosition(200, 300);
-		//this->addChild(my_player);
 	}
 }
 

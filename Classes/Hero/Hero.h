@@ -10,7 +10,7 @@ public:
 
 protected:
 	CC_SYNTHESIZE(std::string, heroName, _heroName);
-	CC_SYNTHESIZE(INT32, speed, _speed);
+	CC_SYNTHESIZE(float, speed, _speed);
 	CC_SYNTHESIZE(INT32,attackDistance, _attackDistance);
 	CC_SYNTHESIZE(INT32, hp, _hp);
 	CC_SYNTHESIZE(INT32, atk, _atk);
@@ -33,5 +33,9 @@ protected:
 	Animate* getRightAnimate()const { return right_animate; };
 	Animate* getUpAnimate()const { return up_animate; };
 	Animate* getDownAnimate()const { return down_animate; };
+	Animate* getStandUpAnimate()const { return stand_up; };
+	Animate* getStandRightAnimate()const { return stand_right; };
+	Animate* getStandLeftAnimate()const { return stand_left; };
+	Animate* getStandDownAnimate()const { return stand_down; };
 };
 #endif // 

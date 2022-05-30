@@ -1,7 +1,8 @@
 #pragma once
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
-
+#define StartX 200
+#define StartY 300
 #include "cocos2d.h"
 #include "Role.h"
 #include"Hero\Hero.h"
@@ -18,13 +19,13 @@ public:
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;//用于在将键盘连续的按下可以移动。
 	void onMouseMove(Event* event);
 
-	static Player* create(const std::string& name);
-	static Player* create(const std::string& name, int offsetX, int offsetY);//重载用于构造初始位置
+	//static Player* create(const std::string& name);
+	static Player* create(const std::string& name, float offsetX=StartX, float offsetY=StartY);//重载用于构造初始位置
 
 	void bind_Camera();//用于绑定摄像机，将镜头随人物移动
 	void update_move(float dt);
 	
-	/*virtual void stand();*/
+	//virtual void stand();
 	virtual void move();//用于移动的函数
 
 
@@ -32,7 +33,7 @@ public:
 	/*下面三个函数用于控制当人物静止时的操作*/
 	void Player::update_mouse(float delta);//更新函数，用于检测当前mouse的位置。
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
-	void setDirestionPicture();//人物静止时，人物的朝向追随鼠标。
+	void update_animate(float delta);//人物静止时，人物的朝向追随鼠标。
 	/*virtual void attack();//用于攻击的函数
 	virtual void skill();
 	//virtual void injured();//用于展示受伤的函数
@@ -41,9 +42,11 @@ public:
 	void runStateEffect(int id);*/
 private:
 	float m_state_lastTime;
-	float offsetX = 200;
-	float offsetY = 300;
-	bool is_facingStatue = false;
+	float offsetX = 0;
+	float offsetY = 0;
+	bool is_facingStatueChanged = false;
+	bool is_standStatueChanged = true;
+	Animate* currentAnimate = nullptr;
 
 };
 #endif// !__HERO__H__
