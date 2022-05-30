@@ -24,7 +24,7 @@ public:
 	Vec2 getFacingPoint();
 	Sprite* getPlayer();
 
-	//virtual void stand();
+	//virtual void stand()=0;
 	virtual void move()=0;//用于移动的函数
 	/*
 	virtual void attack();//用于攻击的函数
@@ -36,16 +36,19 @@ public:
 	//恢复状态
 	void recover();
 
-	/*外部调用接口*/
-    inline void setFacingPoint(const Point& p) { m_facingPoint = p; }
 
 	//用于英雄类型的绑定
-	void bind_hero(Hero hero);
+	void bind_hero(Hero &hero);
 
 	enum class FacingStatus { up=1, down, left, right };//用于判定英雄的朝向
 
+	//判断朝向有没有改变
 	FacingStatus lastFacing = FacingStatus::left;
-	FacingStatus currentFacing;
+	FacingStatus currentFacing = FacingStatus::left;
+
+	//判断行走状态
+	bool current_is_stand = true;
+	bool last_is_stand = true;
 
 	//ID，可以增加函数来使英雄用id调用
 	//virtual inline int getId() { return m_id; }
@@ -59,7 +62,7 @@ public:
 	//属性get/set
 
 	//移动速度
-	inline void setSpeed(int speed) { m_speed = speed; }//用于之后对其不断的update
+	inline void setSpeed(float speed) { m_speed = speed; }//用于之后对其不断的update
 
 	//防御力
 	inline void setDefence(int defence) { m_defence = defence; }
@@ -74,7 +77,7 @@ protected:
 	int m_id;	//id
 
 
-	int m_speed;	//移动速度
+	float m_speed;	//移动速度
 
 	int m_attackDistance;	//攻击距离
 
@@ -96,9 +99,14 @@ protected:
 	/*用于代表动画的类 */
 	Animate* left_animate;
 	Animate* right_animate;
-	Animate* forward_animate;
-	Animate* back_animate;
-
+	Animate* up_animate;
+	Animate* down_animate;
+	//静止时的帧动画
+	Animate* stand_left; 
+	Animate* stand_right;
+	Animate* stand_up;
+	Animate* stand_down;
+	//y用
 	
 
 };

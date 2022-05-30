@@ -46,9 +46,10 @@ Scene* BattleScene::createScene()
 		scene->getPhysicsWorld()->setAutoStep(true);
 		scene->getPhysicsWorld()->setGravity(cocos2d::Vec2::ZERO);
 		scene->retain();
-		my_player->setPosition(200, 300);
+		//my_player->setPosition(200, 300);
 		this->addChild(my_player);
 		my_player->move();
+
 		return scene;
 	}
 	return nullptr;
@@ -60,8 +61,6 @@ void BattleScene::bindPlayer(Player* _player)
 	if (_player == nullptr && my_player == nullptr)
 	{
 		my_player = _player;
-		my_player->setPosition(200, 300);
-		//this->addChild(my_player);
 	}
 }
 
@@ -73,8 +72,5 @@ BattleScene::BattleScene(std::string mapname/*»¹Òª¼ÌĞø¼ÓÈëÈËÎïÀàµÄdata memberµÄ³
 	this->meta_barrier->setVisible(false);
 	this->meta_grass = battlemap->getLayer("meta_grass");
 	this->meta_grass->setVisible(false);
-	//HeroMove::createHero();
-	//my_player->bind_hero();
-	my_player = my_player->create("hero/Hero1_left.png");
-	//bindPlayer(my_player->create("Scene/hero/Hero1.png"));
+	my_player = my_player->create("hero/hero1_begin.png");
 };

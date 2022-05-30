@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Hero1_back_1.png</key>
+            <key>Hero1_down_1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -25,28 +25,28 @@
                 <key>verticesUV</key>
                 <string>30 3 49 52 12 51 1 18 12 1 25 1</string>
             </dict>
-            <key>Hero1_back_2.png</key>
+            <key>Hero1_down_2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-2,1.5}</string>
+                <string>{-1.5,1.5}</string>
                 <key>spriteSize</key>
-                <string>{45,52}</string>
+                <string>{46,52}</string>
                 <key>spriteSourceSize</key>
                 <string>{55,55}</string>
                 <key>textureRect</key>
-                <string>{{44,1},{45,52}}</string>
+                <string>{{44,1},{46,52}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
                 <string>2 3 4 0 2 4 0 1 2</string>
                 <key>vertices</key>
-                <string>48 43 19 52 6 39 3 1 32 0</string>
+                <string>49 44 19 52 6 39 3 1 32 0</string>
                 <key>verticesUV</key>
-                <string>89 44 60 53 47 40 44 2 73 1</string>
+                <string>90 45 60 53 47 40 44 2 73 1</string>
             </dict>
-            <key>Hero1_back_3.png</key>
+            <key>Hero1_down_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -67,7 +67,7 @@
                 <key>verticesUV</key>
                 <string>30 3 49 52 12 51 1 18 12 1 25 1</string>
             </dict>
-            <key>Hero1_back_4.png</key>
+            <key>Hero1_down_4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -98,13 +98,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>hero1back.png</string>
+            <string>hero1down.png</string>
             <key>size</key>
             <string>{128,54}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1525469b6b86e2721c2769f3ad7a23d2:4045a97adf2ca8b2b37e3b94796dea6e:878ee9e81886d7b428d29d97d11904cb$</string>
+            <string>$TexturePacker:SmartUpdate:b56901d542c1a095a29cce40e43bdbed:4045a97adf2ca8b2b37e3b94796dea6e:601139d9f43fa0f5cbc2bc1df8cdec04$</string>
             <key>textureFileName</key>
-            <string>hero1back.png</string>
+            <string>hero1down.png</string>
         </dict>
     </dict>
 </plist>

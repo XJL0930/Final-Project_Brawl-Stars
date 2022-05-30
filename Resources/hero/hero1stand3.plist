@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>Hero1_stand3_1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{2,2}</string>
+                <key>spriteSize</key>
+                <string>{48,51}</string>
+                <key>spriteSourceSize</key>
+                <string>{54,55}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{48,51}}</string>
+                <key>textureRotated</key>
+                <false/>
+                <key>triangles</key>
+                <string>3 4 5 0 3 5 0 1 2 0 2 3</string>
+                <key>vertices</key>
+                <string>34 2 53 51 16 50 5 17 16 0 29 0</string>
+                <key>verticesUV</key>
+                <string>30 3 49 52 12 51 1 18 12 1 25 1</string>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>hero1stand3.png</string>
+            <key>size</key>
+            <string>{50,53}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:3a0d262b3d77a6ae6bc3085a696a08de:d5776252feb73cc65a0be5633c3bdea0:be319f841c2054255e6b60a62ef2a4ef$</string>
+            <key>textureFileName</key>
+            <string>hero1stand3.png</string>
+        </dict>
+    </dict>
+</plist>
