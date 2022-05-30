@@ -16,7 +16,7 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	if (player && player->m_hero)
 	{
 		//设置角色初始位置
-		//player->setAnchorPoint(Vec2(0,0));
+		//player->setAnchorPoint(Vec2(0.5,0.5));
 		player->setPosition(offsetX, offsetY);
 		//标记角色
 		//Hero hero_;
@@ -28,11 +28,13 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	
 	return nullptr;
 }
- void Player::move()
+void Player::move()
 {
-	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move), m_speed);
+	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move),m_speed);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_mouse));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_animate));
+	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_route));
+	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weapon),0.2f);
 	//初始化键盘监听事件。
 	auto keyListener = EventListenerKeyboard::create();
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
@@ -47,14 +49,24 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 	
 	auto _mouseListener = EventListenerMouse::create();
+	_mouseListener->onMouseDown = [&](EventMouse* event)
+	{
+		log("mouse down");
+		isMousePressed = true;
+	};
+	_mouseListener->onMouseUp = [&](EventMouse* event)
+	{
+		//log("mouseLeft released");
+		isMousePressed = false;
+	};
 	_mouseListener->onMouseMove = CC_CALLBACK_1(Player::onMouseMove, this);
+	//_mouseListener->onMouseDown = CC_CALLBACK_1(Player::onMouseDown, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
 
 	
 	return;
 
 }
-
  void Player::update_move(float delta)
  {
 
@@ -134,10 +146,12 @@ void Player::onMouseMove(Event* event)
 {
 	EventMouse* e = (EventMouse*)event;
 	m_facingPoint = Vec2(e->getCursorX() - 200, e->getCursorY() - 300);
+	log("m_facingPoint:%f,%f", m_facingPoint.x, m_facingPoint.y);
 }
+
 void Player::update_animate(float delta)
 {
-	log("%d+++++++++%d",current_is_stand,last_is_stand );
+	//log("%d+++++++++%d",current_is_stand,last_is_stand );
 	if (is_facingStatueChanged||is_standStatueChanged)
 	{
 		m_hero->stopAction(currentAnimate);
@@ -183,4 +197,42 @@ void Player::update_animate(float delta)
 		lastFacing = currentFacing;
 	}
 	
+}
+void Player::update_route(float delta)
+{
+	// 用来实时监测武器的路线，包括起始位置，目标位置
+	m_currentPoint = m_hero->getPosition();
+	//log("m_currentPoint:%f,%f", m_currentPoint.x, m_currentPoint.y);
+}
+void Player::update_weapon(float delta)
+{
+	if (isMousePressed)
+	{
+		double nowLength = sqrt(pow(m_facingPoint.x - m_currentPoint.x, 2) + pow(m_facingPoint.y - m_currentPoint.y, 2));
+		double rate = 200 / nowLength;
+		const Vec2 route = Vec2((m_facingPoint.x-m_currentPoint.x) * rate, (m_facingPoint.y- m_currentPoint.y) * rate);
+		auto moveto = MoveBy::create(0.5, route);
+
+		Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
+		auto cache = SpriteFrameCache::getInstance();
+		cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
+		//log("weaponCache is done!");
+
+		auto spriteFrame =
+			SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		auto bullet = Sprite::createWithSpriteFrame(spriteFrame);
+		this->addChild(bullet);
+		auto arrived = [=]()
+		{
+			this->removeChild(bullet, true);
+		};
+		auto callfunc = CallFunc::create(arrived);
+		//log("%f,%f", heropos.x, heropos.y);
+		//bullet->setAnchorPoint(Point(0.5, 0.5));
+		bullet->setPosition(
+			m_currentPoint.x,
+			m_currentPoint.y);
+		bullet->runAction(Sequence::create(moveto, animate,callfunc, NULL));
+		//bullet->runAction(callfunc);
+	}
 }
