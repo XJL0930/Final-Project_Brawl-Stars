@@ -27,3 +27,20 @@ Animate* MyAnimate::creatHeroAnimate(int hero_type, const char* direction,  int 
 	myAnimate->retain();
 	return myAnimate;
 }
+Animate* MyAnimate::creatWeaponAnimate(const char* plistName, const char* pngName, int loop)
+{
+	SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+	char plistpath[30];
+	sprintf(plistpath, "weapon/%s.plist", plistName);
+	cache->addSpriteFramesWithFile(plistpath);
+	Vector<SpriteFrame*> frameVec;
+	char picName[30];
+	for (int i = 1; i <= 5; i++)
+	{
+		sprintf(picName, "%s%d.png", pngName, i);
+		frameVec.pushBack(cache->getSpriteFrameByName(picName));
+	}
+	Animation* animation = Animation::createWithSpriteFrames(frameVec, 0.2f / 4);
+	Animate* myAnimate = Animate::create(animation);
+	return myAnimate;
+}

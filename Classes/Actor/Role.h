@@ -71,8 +71,8 @@ public:
 
 protected:
 	/*与战斗相关的数据*/
-	Vec2 m_facingPoint ;//当前的坐标
-
+	Vec2 m_facingPoint ;//目标的坐标
+	Vec2 m_currentPoint;//当前的坐标
 
 	int m_id;	//id
 
