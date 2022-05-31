@@ -2509,7 +2509,7 @@
   </data>
  </layer>
  <objectgroup id="2" name="object">
-  <object id="1" name="playerPoint" x="782.631" y="901.58" width="31.089" height="35.144"/>
+  <object id="1" name="playerPoint" x="905.635" y="173.012" width="31.089" height="35.144"/>
  </objectgroup>
  <layer id="6" name="cross" width="50" height="50" locked="1">
   <data>
@@ -12532,7 +12532,7 @@
  </layer>
  <layer id="5" name="meta_barrier" width="50" height="50">
   <properties>
-   <property name="Collidable" value="true"/>
+   <property name="Collision" value="true"/>
   </properties>
   <data>
    <tile/>

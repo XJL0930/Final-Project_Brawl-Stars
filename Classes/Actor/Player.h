@@ -26,7 +26,8 @@ public:
 	bool onMouseDown(Event* event);
 	//static Player* create(const std::string& name);
 	static Player* create(const std::string& name, float offsetX=StartX, float offsetY=StartY);//重载用于构造初始位置
-
+	void setXY(int x, int y);
+	Point tileCoordForPosition(Point pos);
 	void bind_Camera();//用于绑定摄像机，将镜头随人物移动
 	
 	
@@ -42,18 +43,22 @@ public:
 	void update_animate(float delta);//人物静止时，人物的朝向追随鼠标
 	void update_route(float delta);//更新武器的路线
 	void update_weapon(float delta);
+	void update_setViewPointByPlayer(float dt);//更新视角
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
-	
+	bool Player::collisionTest(Rect);//监测是否有障碍物
 	/*virtual void attack();//用于攻击的函数
 	virtual void skill();
 	//virtual void injured();//用于展示受伤的函数
 	virtual void die();//用于展示死亡的函数
 
 	void runStateEffect(int id);*/
+	TMXTiledMap* m_map;
+	TMXLayer* meta_barrier;
+	TMXLayer* meta_grass;
 private:
 	float m_state_lastTime;
-	float offsetX = 0;
-	float offsetY = 0;
+	float offsetX =0;
+	float offsetY =0;
 	bool is_facingStatueChanged = false;
 	bool is_standStatueChanged = true;
 	//double maxLength=300;
