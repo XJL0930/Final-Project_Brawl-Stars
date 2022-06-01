@@ -87,7 +87,7 @@ void Player::move()
 	 if (keys[left])
 	 {
 		 offsetX -= 10;
-		 if (!collisionTest(this->getBoundingBox()))
+		 if (!collisionTest())
 		 {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(-10, 0));
 			 //测试
@@ -100,7 +100,7 @@ void Player::move()
 	 else if (keys[right])
 	 {
 		 offsetX += 10;
-		 if (!collisionTest(this->getBoundingBox()))
+		 if (!collisionTest())
 		 {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(10,0));
 
@@ -113,7 +113,7 @@ void Player::move()
 	 else if (keys[down])
 	 {
 		 offsetY -= 10;
-		 if (!collisionTest(this->getBoundingBox())) {
+		 if (!collisionTest()) {
 
 			 auto moveBy = MoveBy::create(m_speed, Vec2(0, -10));
 
@@ -126,7 +126,7 @@ void Player::move()
 	 else if (keys[up])
 	 {
 		 offsetY += 10;
-		 if (!collisionTest(this->getBoundingBox())) {
+		 if (!collisionTest()) {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(0,10));
 
 			 m_hero->runAction(moveBy);
@@ -300,26 +300,40 @@ void Player::update_setViewPointByPlayer(float dt) {
 	log("map moved");
 }
 
-bool Player::collisionTest(Rect rect)
+bool Player::collisionTest()
 {
 	int gid = 0;
+	
 	Size mapSize =m_map->getContentSize();
 	Size tileSize = m_map->getTileSize();
 
-	if (rect.getMinX() < 0 || rect.getMaxX() >= mapSize.width ||
-		rect.getMinY() < 0 || rect.getMaxY() >= mapSize.height)
+	if (offsetX-15 < 0 || offsetX+10 >= mapSize.width ||
+		offsetY-15 < 0 || offsetY+20 >= mapSize.height)
 		return true;
-
-	float MinY = mapSize.height - rect.getMinY();
-	float MaxY = mapSize.height - rect.getMaxY();
-	//对四个顶点进行碰撞检测
-	Point tiledGid = Point((int)(this->getPositionX() / tileSize.width),
-		(int)(this->getPositionY() / tileSize.height)-17);
+	
+	Point tiledGid = Point((int)(((this->offsetX)+5)/ tileSize.width),
+		(int)(50-(this->offsetY-10) / tileSize.height));
 	gid = meta_barrier->getTileGIDAt(tiledGid);
-	log("gid:%d",gid);
-	if (gid==440)
+	if (gid!=0)
 		return true;
 
+	tiledGid = Point((int)(((this->offsetX)+5) / tileSize.width),
+		(int)(50 - ((this->offsetY)+20)/ tileSize.height));
+	gid = meta_barrier->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+
+	tiledGid = Point((int)(((this->offsetX)-15)/ tileSize.width),
+		(int)(50 - (this->offsetY-10) / tileSize.height));
+	gid = meta_barrier->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+
+	tiledGid = Point((int)(((this->offsetX)-15)/ tileSize.width),
+		(int)(50 - ((this->offsetY)+20)/ tileSize.height));
+	gid = meta_barrier->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
 	return false;
 }
 
@@ -327,6 +341,8 @@ void Player::setXY(int x, int y)
 {
 	this->offsetX = x;
 	this->offsetY = y;
+	this->originx = x;
+	this->originy = y;
 }
 
 Point Player::tileCoordForPosition(Point pos) {

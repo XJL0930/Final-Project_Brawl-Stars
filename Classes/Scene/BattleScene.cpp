@@ -67,7 +67,6 @@ void BattleScene::bindPlayer(Player* _player)
 	}
 }
 
-
 BattleScene::BattleScene(std::string mapname/*还要继续加入人物类的data member的初始化*/) {
 	battlemap=TMXTiledMap::create(mapname);
 

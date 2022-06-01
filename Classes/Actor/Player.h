@@ -45,7 +45,7 @@ public:
 	void update_weapon(float delta);
 	void update_setViewPointByPlayer(float dt);//更新视角
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
-	bool Player::collisionTest(Rect);//监测是否有障碍物
+	bool Player::collisionTest();//监测是否有障碍物
 	/*virtual void attack();//用于攻击的函数
 	virtual void skill();
 	//virtual void injured();//用于展示受伤的函数
@@ -56,6 +56,8 @@ public:
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
 private:
+	float originx;
+	float originy;
 	float m_state_lastTime;
 	float offsetX =0;
 	float offsetY =0;
