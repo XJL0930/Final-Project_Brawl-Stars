@@ -40,18 +40,18 @@ void Player::move()
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move),m_speed);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_mouse));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_animate));
-	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_route));
+	//this->schedule(CC_SCHEDULE_SELECTOR(Player::update_route));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weapon),0.2f);
-	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_setViewPointByPlayer), 0.05f);
+	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_setViewPointByPlayer));
 	//初始化键盘监听事件。
 	auto keyListener = EventListenerKeyboard::create();
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-		log("key pressed");
+		//rlog("key pressed");
 		keys[keyCode] = true;
 	};
 
 	keyListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-		log("key pressed");
+		//log("key pressed");
 		keys[keyCode] = false;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
@@ -59,7 +59,7 @@ void Player::move()
 	auto _mouseListener = EventListenerMouse::create();
 	_mouseListener->onMouseDown = [&](EventMouse* event)
 	{
-		log("mouse down");
+		//log("mouse down");
 		isMousePressed = true;
 	};
 	_mouseListener->onMouseUp = [&](EventMouse* event)
@@ -147,16 +147,20 @@ void Player::move()
  }
  void Player::update_mouse(float delta)
  {
+	 //笑死，最简单的方法就是最笨的方法。
+	 Point direction;
 	 //注意此处用的是openGL坐标系，是在左下角为原点(0,0);
-	 auto direction = m_facingPoint;
-
-	 if (direction.x - offsetX >= 0 && getFacingDistance(direction.x, offsetX) >= getFacingDistance(direction.y, offsetY))
+		 direction = tileCoordForPosition(m_facingPoint) ;
+		
+	 Point temp= tileCoordForPosition(Vec2(offsetX, offsetY));
+		
+	 if (direction.x - temp.x >= 0 && getFacingDistance(direction.x, temp.x) >= getFacingDistance(direction.y, temp.y))
 		 currentFacing = FacingStatus::right;
-	 else if (direction.x - offsetX < 0 && getFacingDistance(direction.x, offsetX) >= getFacingDistance(direction.y, offsetY))
+	if (direction.x - temp.x < 0 && getFacingDistance(direction.x, temp.x) >= getFacingDistance(direction.y, temp.y))
 		 currentFacing = FacingStatus::left;
-	 else if (direction.y - offsetY >= 0 && getFacingDistance(direction.x, offsetX) < getFacingDistance(direction.y, offsetY))
+	 if (direction.y - temp.y >= 0 && getFacingDistance(direction.x, temp.x) < getFacingDistance(direction.y, temp.y))
 		 currentFacing = FacingStatus::up;
-	 else if (direction.y - offsetY < 0 && getFacingDistance(direction.x, offsetX) < getFacingDistance(direction.y, offsetY))
+	if (direction.y - temp.y < 0 && getFacingDistance(direction.x, temp.x) < getFacingDistance(direction.y, temp.y))
 		 currentFacing = FacingStatus::down;
 	 if (lastFacing != currentFacing)
 		 is_facingStatueChanged = true;
@@ -166,14 +170,20 @@ void Player::move()
 		 is_standStatueChanged = true;
 	 else
 		 is_standStatueChanged = false;
-	 //log("%d", is_facingStatue);
+	 /*log("temp::%f===========%f", temp.x,temp.y);
+	
+	 log("m_facingPoint:%f,%f", direction.x, direction.y);*/
+
  }
 
  void Player::onMouseMove(Event* event)
  {
+	
 	 EventMouse* e = (EventMouse*)event;
-	 m_facingPoint = Vec2(e->getCursorX() - 200, e->getCursorY() - 300);
-	 log("m_facingPoint:%f,%f", m_facingPoint.x, m_facingPoint.y);
+	 //m_facingPoint = tileCoordForPosition(Vec2(e->getCursorX(), e->getCursorY()));
+	
+	 m_facingPoint = Vec2(e->getCursorX() , e->getCursorY() )- viewPos;
+	 
  }
 
  void Player::update_animate(float delta)
@@ -225,20 +235,20 @@ void Player::move()
 	 }
 
  }
- void Player::update_route(float delta)
- {
-	 // 用来实时监测武器的路线，包括起始位置，目标位置
-	 m_currentPoint = m_hero->getPosition();
-	 //log("m_currentPoint:%f,%f", m_currentPoint.x, m_currentPoint.y);
- }
+ //void Player::update_route(float delta)
+ //{
+	// // 用来实时监测武器的路线，包括起始位置，目标位置
+	// m_currentPoint = m_hero->getPosition();
+	// //log("m_currentPoint:%f,%f", m_currentPoint.x, m_currentPoint.y);
+ //}
  void Player::update_weapon(float delta)
  {
 	 if (isMousePressed)
 	 {
-		 double nowLength = sqrt(pow(m_facingPoint.x - m_currentPoint.x, 2) + pow(m_facingPoint.y - m_currentPoint.y, 2));
+		 double nowLength = sqrt(pow(m_facingPoint.x -offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
 		 double rate = 200 / nowLength;
-		 const Vec2 route = Vec2((m_facingPoint.x - m_currentPoint.x) * rate, (m_facingPoint.y - m_currentPoint.y) * rate);
-		 auto moveto = MoveBy::create(0.5, route);
+		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
+		 auto moveto = MoveBy::create(0.5f, route);
 
 		 Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
 		 auto cache = SpriteFrameCache::getInstance();
@@ -257,8 +267,8 @@ void Player::move()
 		 //log("%f,%f", heropos.x, heropos.y);
 		 //bullet->setAnchorPoint(Point(0.5, 0.5));
 		 bullet->setPosition(
-			 m_currentPoint.x,
-			 m_currentPoint.y);
+			 offsetX,
+			 offsetY);
 		 bullet->runAction(Sequence::create(moveto, animate, callfunc, NULL));
 		 //bullet->runAction(callfunc);
 	 }
@@ -294,10 +304,15 @@ void Player::update_setViewPointByPlayer(float dt) {
 	//屏幕中点
 	Point centerPos = Point(visibleSize.width / 2, visibleSize.height / 2);
 	//计算屏幕中点和所要一定的目的点之间的距离
-	Point viewPos = centerPos - destPos;
-	log("%d  %d",offsetX,offsetY);
+	//Point viewPos = centerPos - destPos;
+	viewPos =centerPos - destPos ;
+	//log("%d  %d",offsetX,offsetY);
 	parent->setPosition(viewPos);
-	log("map moved");
+	log("desPositions%f======%f", tileCoordForPosition(destPos).x, tileCoordForPosition(destPos).y);
+	log("centPositions%f======%f", tileCoordForPosition(centerPos).x, tileCoordForPosition(centerPos).y);
+
+	//m_facingPoint =(m_facingPoint) - 2 * viewPos;
+	//log("map moved");
 }
 
 bool Player::collisionTest()

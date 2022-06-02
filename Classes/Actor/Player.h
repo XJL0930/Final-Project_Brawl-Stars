@@ -17,7 +17,7 @@ public:
 	//void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//添加了键盘按下的事件
 	//void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//添加了键盘松开这个事件
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;//用于在将键盘连续的按下可以移动。
-	
+	Point viewPos;
 	//void onMouseLeftPressed(cocos2d::EventMouse::MouseButton keyCode, cocos2d::Event* event);
 	//void onMouseLeftReleased(cocos2d::EventMouse::MouseButton keyCode, cocos2d::Event* event);
 	//std::map<EventMouse::MouseEventType, bool> mouses;//用于在将鼠标左键按下时能够持续发射精灵
@@ -41,7 +41,7 @@ public:
 	void update_mouse(float delta);//更新函数，用于检测当前mouse的位置。
 	void update_move(float delta);
 	void update_animate(float delta);//人物静止时，人物的朝向追随鼠标
-	void update_route(float delta);//更新武器的路线
+	//void update_route(float delta);//更新武器的路线
 	void update_weapon(float delta);
 	void update_setViewPointByPlayer(float dt);//更新视角
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
