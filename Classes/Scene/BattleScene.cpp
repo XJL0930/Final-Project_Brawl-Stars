@@ -59,9 +59,7 @@ void BattleScene::bindPlayer(Player* _player)
 {
 	if (_player != nullptr && my_player == nullptr)
 	{
-		_player->m_map = battlemap;
-		_player->meta_barrier = meta_barrier;
-		_player->meta_grass = meta_grass;
+		_player->bind_map(battlemap, meta_barrier, meta_grass);
 
 		this->my_player = _player;
 		battlemap->addChild(my_player,3);

@@ -67,9 +67,29 @@ public:
 	//防御力
 	inline void setDefence(int defence) { m_defence = defence; }
 
+	bool collisionTest();//监测是否有障碍物
+	bool grassTest();//监测是否走到草里了
+
+	void setXY(int x, int y);
+	Point tileCoordForPosition(Point pos);
+
+	void bind_map(TMXTiledMap* battlemap,
+		TMXLayer* meta_barrier,
+		TMXLayer* meta_grass);
+
 	Sprite* m_hero = nullptr;
 
 protected:
+	float originx;//初始的位置
+	float originy;
+	float offsetX = 0;//当前的位置
+	float offsetY = 0;
+
+	/*地图相关*/
+	TMXTiledMap* m_map;
+	TMXLayer* meta_barrier;
+	TMXLayer* meta_grass;
+
 	/*与战斗相关的数据*/
 	Vec2 m_facingPoint ;//目标的坐标
 	Vec2 m_currentPoint;//当前的坐标

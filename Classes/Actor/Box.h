@@ -2,9 +2,9 @@
 #ifndef __BOX__H__
 #define __BOX__H__
 #include "cocos2d.h"
-#include "Actor.h"
+#include "Role.h"
 USING_NS_CC;
-class Box :public Actor
+class Box :public Role
 {
 public :
 	void playAnimation();
