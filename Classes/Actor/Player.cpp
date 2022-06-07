@@ -75,7 +75,7 @@ void Player::move()
 	return;
 
 }
- void Player::update_move(float delta)
+ void Player::update_move(float delta) 
  {
 
 	 auto left = cocos2d::EventKeyboard::KeyCode::KEY_A;
@@ -245,19 +245,21 @@ void Player::move()
  {
 	 if (isMousePressed)
 	 {
-		 double nowLength = sqrt(pow(m_facingPoint.x -offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
-		 double rate = 200 / nowLength;
+		 //log("mouse pressed");
+		 double nowlength = sqrt(pow(m_facingPoint.x -offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
+		 double rate = 200 / nowlength;
 		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
-		 auto moveto = MoveBy::create(0.5f, route);
-
+		 auto moveby = MoveBy::create(0.5f, route);
+		 //log("offsetX:%f,offsetY:%f", offsetX, offsetY);
+		 log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
 		 Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
 		 auto cache = SpriteFrameCache::getInstance();
 		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
-		 //log("weaponCache is done!");
+		 //log("weaponcache is done!"); 
 
-		 auto spriteFrame =
+		 auto spriteframe =
 			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
-		 auto bullet = Sprite::createWithSpriteFrame(spriteFrame);
+		 auto bullet = Sprite::createWithSpriteFrame(spriteframe);
 		 this->addChild(bullet);
 		 auto arrived = [=]()
 		 {
@@ -265,15 +267,27 @@ void Player::move()
 		 };
 		 auto callfunc = CallFunc::create(arrived);
 		 //log("%f,%f", heropos.x, heropos.y);
-		 //bullet->setAnchorPoint(Point(0.5, 0.5));
+		 //bullet->setanchorpoint(point(0.5, 0.5));
+		 
 		 bullet->setPosition(
-			 offsetX,
-			 offsetY);
-		 bullet->runAction(Sequence::create(moveto, animate, callfunc, NULL));
-		 //bullet->runAction(callfunc);
+			 offsetX-originx,
+			 offsetY-originy);
+		 //this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weaponOut));
+		 // 写一个监听函数，在监听函数里如果遇到碰撞就在运动过程中callfunc，如果没有碰撞，就走完在callfunc
+		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
 	 }
  }
+ void Player::update_weaponOut(float delta)
+ {
+	 if (!collisionTest())
+	 {
+		 //bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
+	 }
+	 else
+	 {
 
+	 }
+ }
 void Player::update_setViewPointByPlayer(float dt) {
 	Layer* parent = (Layer*)getParent();
 	//地图方块数量
@@ -308,8 +322,8 @@ void Player::update_setViewPointByPlayer(float dt) {
 	viewPos =centerPos - destPos ;
 	//log("%d  %d",offsetX,offsetY);
 	parent->setPosition(viewPos);
-	log("desPositions%f======%f", tileCoordForPosition(destPos).x, tileCoordForPosition(destPos).y);
-	log("centPositions%f======%f", tileCoordForPosition(centerPos).x, tileCoordForPosition(centerPos).y);
+	//log("desPositions%f======%f", tileCoordForPosition(destPos).x, tileCoordForPosition(destPos).y);
+	//log("centPositions%f======%f", tileCoordForPosition(centerPos).x, tileCoordForPosition(centerPos).y);
 
 	//m_facingPoint =(m_facingPoint) - 2 * viewPos;
 	//log("map moved");
