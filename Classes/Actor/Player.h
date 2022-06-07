@@ -44,6 +44,7 @@ public:
 	//void update_route(float delta);//更新武器的路线
 	void update_weapon(float delta);
 	void update_setViewPointByPlayer(float dt);//更新视角
+	void update_weaponOut(float delta);
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
 	bool Player::collisionTest();//监测是否有障碍物
 	/*virtual void attack();//用于攻击的函数
