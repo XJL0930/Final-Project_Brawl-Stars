@@ -83,6 +83,11 @@ void Player::move()
 	 auto down = cocos2d::EventKeyboard::KeyCode::KEY_S;
 	 auto up = cocos2d::EventKeyboard::KeyCode::KEY_W;
 
+	 this->setCascadeOpacityEnabled(true);
+	 if (grassTest())
+		 this->setOpacity(100);
+	 else
+		 this->setOpacity(500);
 
 	 if (keys[left])
 	 {
@@ -381,4 +386,41 @@ Point Player::tileCoordForPosition(Point pos) {
 	int x = pos.x/tiledSize.width;
 	int y = pos.y/tiledSize.height;
 	return Point(x, y);
+}
+
+bool Player::grassTest()
+{
+	int gid = 0;
+
+	Size mapSize = m_map->getContentSize();
+	Size tileSize = m_map->getTileSize();
+
+	if (offsetX - 15 < 0 || offsetX + 10 >= mapSize.width ||
+		offsetY - 15 < 0 || offsetY + 20 >= mapSize.height)
+		return true;
+
+	Point tiledGid = Point((int)(((this->offsetX) + 5) / tileSize.width),
+		(int)(50 - (this->offsetY - 10) / tileSize.height));
+	gid = meta_grass->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+
+	tiledGid = Point((int)(((this->offsetX) + 5) / tileSize.width),
+		(int)(50 - ((this->offsetY) + 20) / tileSize.height));
+	gid = meta_grass->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+
+	tiledGid = Point((int)(((this->offsetX) - 15) / tileSize.width),
+		(int)(50 - (this->offsetY - 10) / tileSize.height));
+	gid = meta_grass->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+
+	tiledGid = Point((int)(((this->offsetX) - 15) / tileSize.width),
+		(int)(50 - ((this->offsetY) + 20) / tileSize.height));
+	gid = meta_grass->getTileGIDAt(tiledGid);
+	if (gid != 0)
+		return true;
+	return false;
 }

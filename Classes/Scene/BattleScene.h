@@ -17,6 +17,7 @@ public:
 	//用来将物理碰撞引入Scene
 	Scene* createScene();
 	void bindPlayer(Player* _player);
+	void setcircle();//用于设置毒圈
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;

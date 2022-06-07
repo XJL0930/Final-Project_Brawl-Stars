@@ -47,6 +47,7 @@ public:
 	void update_weaponOut(float delta);
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
 	bool Player::collisionTest();//监测是否有障碍物
+	bool grassTest();//监测是否走到草里了
 	/*virtual void attack();//用于攻击的函数
 	virtual void skill();
 	//virtual void injured();//用于展示受伤的函数
