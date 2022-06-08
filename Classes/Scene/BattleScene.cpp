@@ -42,6 +42,10 @@ Scene* BattleScene::createScene()
 
 	if (scene != nullptr)
 	{
+
+		GameTimer* m_timer = GameTimer::createTimer(180);
+		m_timer->setPosition(200, 700);
+		this->addChild(m_timer);
 		scene->addChild(this, 0);
 		scene->getPhysicsWorld()->setAutoStep(true);
 		scene->getPhysicsWorld()->setGravity(cocos2d::Vec2::ZERO);

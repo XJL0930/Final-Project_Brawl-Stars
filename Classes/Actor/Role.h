@@ -80,6 +80,7 @@ public:
 	Sprite* m_hero = nullptr;
 
 protected:
+	int pos;//在几号位置
 	float originx;//初始的位置
 	float originy;
 	float offsetX = 0;//当前的位置

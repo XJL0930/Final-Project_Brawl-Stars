@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="2">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="13">
  <tileset firstgid="1" source="tmw_desert_spacing.tsx"/>
  <tileset firstgid="49" source="TileB.tsx"/>
  <tileset firstgid="305" source="VX自带 (1).tsx"/>
@@ -2510,6 +2510,16 @@
  </layer>
  <objectgroup id="2" name="object">
   <object id="1" name="playerPoint" x="1215.17" y="320.351" width="31.089" height="35.144"/>
+  <object id="2" name="playerPoint2" x="921.855" y="90.5635" width="44.6059" height="41.9025"/>
+  <object id="3" name="playerPoint3" x="475.796" y="94.6186" width="39.1991" height="39.1991"/>
+  <object id="5" name="playerPoint4" x="244.657" y="382.529" width="41.9025" height="39.1991"/>
+  <object id="6" name="playerPoint5" x="194.644" y="850.215" width="48.661" height="45.9576"/>
+  <object id="7" name="playerPoint6" x="654.22" y="1389.54" width="45.9576" height="43.2542"/>
+  <object id="8" name="playerPoint7" x="1246.26" y="1061.08" width="40.5508" height="36.4957"/>
+  <object id="9" name="playerPoint8" x="1297.63" y="694.771" width="40.5508" height="43.2542"/>
+  <object id="10" name="playerPoint9" x="344.682" y="1124.61" width="36.4957" height="37.8474"/>
+  <object id="11" name="playerPoint1" x="1225.99" y="1355.75" width="31.089" height="31.089"/>
+  <object id="12" x="1389.54" y="1819.38"/>
  </objectgroup>
  <layer id="6" name="cross" width="50" height="50" locked="1">
   <data>

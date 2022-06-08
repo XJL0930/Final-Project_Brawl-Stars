@@ -1,5 +1,6 @@
 #include "Player.h"
 #include"Hero\Shirley.h"
+#include <ctime>
 
 void Player::update(float delta) {
 
@@ -16,7 +17,45 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	if (player && player->m_hero)
 	{
 		TMXObjectGroup* objGroup = map->getObjectGroup("object");
+
+		srand((unsigned)time(NULL));
+		player->pos = rand()%10;
 		auto object = objGroup->getObject("playerPoint");
+		switch (player->pos)
+		{
+		case 0:
+			object = objGroup->getObject("playerPoint");
+			break;
+		case 1:
+			object = objGroup->getObject("playerPoint1");
+			break;
+		case 2:
+			object = objGroup->getObject("playerPoint2");
+			break;
+		case 3:
+			object = objGroup->getObject("playerPoint3");
+			break;
+		case 4:
+			object = objGroup->getObject("playerPoint4");
+			break;
+		case 5:	
+			object = objGroup->getObject("playerPoint5");
+			break;
+		case 6:
+			object = objGroup->getObject("playerPoint6");
+			break;
+		case 7:
+			object = objGroup->getObject("playerPoint7");
+			break;
+		case 8:
+			object = objGroup->getObject("playerPoint8");
+			break;
+		case 9:
+			object = objGroup->getObject("playerPoint9");
+			break;
+		default:
+			break;
+		}
 
 		int x = object["x"].asFloat();
 		int y = object["y"].asFloat();

@@ -4,6 +4,7 @@
 #include<cocos2d.h>
 #include<string>
 #include"Actor\Player.h"
+#include"Component/GameTimer.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
