@@ -3,8 +3,8 @@
 
 #include<cocos2d.h>
 #include<string>
-#include"Actor\Player.h"
-#include"Component/GameTimer.h"
+#include"Actor/Player.h"
+#include"Actor/Monster.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
@@ -18,13 +18,37 @@ public:
 	//用来将物理碰撞引入Scene
 	Scene* createScene();
 	void bindPlayer(Player* _player);
+	Monster* bindMonster(Monster* _monster,int num);
 	void setcircle();//用于设置毒圈
+		//下面是人物出场的初始位置
+	std::map<int, Point> initPos;
+	void initPosition();
+	//初始化monster
+	bool onContactBegin(PhysicsContact& contact);
+	void initMonster(float dealt);
+	void monsterAttacked(Node* a,Node* b);
+	void playerAttacked(Node* a, Node* b);
+	bool isCurrentMonsterLive = true;
+	bool isCurrentPlayerLive = true;
+
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
 private:
-	Player* my_player=nullptr;
+	Player* my_player = nullptr;
+	Monster* my_monster[9] = {nullptr};
+	/*Monster* my_monster2 = nullptr;
+	Monster* my_monster3 = nullptr;
+	Monster* my_monster4 = nullptr;
+	Monster* my_monster5 = nullptr;
+	Monster* my_monster6 = nullptr;
+	Monster* my_monster7 = nullptr;
+	Monster* my_monster8 = nullptr;
+	Monster* my_monster9 = nullptr;*/
+	int maxMonsterNum = 1;
+	int currentMonsterNum = 0;
+	int redomPos[10] = { 0 };
 };
 
 

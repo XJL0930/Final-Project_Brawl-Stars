@@ -1,6 +1,6 @@
 #include "Player.h"
 #include"Hero\Shirley.h"
-#include <ctime>
+#include"Const/const.h"
 
 void Player::update(float delta) {
 
@@ -14,56 +14,21 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	}
 	player->initHeroPicture(Sprite::create(name));
 	auto map = TMXTiledMap::create("Scene/desert_map/desert_map.tmx");
+	
 	if (player && player->m_hero)
 	{
 		TMXObjectGroup* objGroup = map->getObjectGroup("object");
-
-		srand((unsigned)time(NULL));
-		player->pos = rand()%10;
 		auto object = objGroup->getObject("playerPoint");
-		switch (player->pos)
-		{
-		case 0:
-			object = objGroup->getObject("playerPoint");
-			break;
-		case 1:
-			object = objGroup->getObject("playerPoint1");
-			break;
-		case 2:
-			object = objGroup->getObject("playerPoint2");
-			break;
-		case 3:
-			object = objGroup->getObject("playerPoint3");
-			break;
-		case 4:
-			object = objGroup->getObject("playerPoint4");
-			break;
-		case 5:	
-			object = objGroup->getObject("playerPoint5");
-			break;
-		case 6:
-			object = objGroup->getObject("playerPoint6");
-			break;
-		case 7:
-			object = objGroup->getObject("playerPoint7");
-			break;
-		case 8:
-			object = objGroup->getObject("playerPoint8");
-			break;
-		case 9:
-			object = objGroup->getObject("playerPoint9");
-			break;
-		default:
-			break;
-		}
 
 		int x = object["x"].asFloat();
 		int y = object["y"].asFloat();
 		//设置角色初始位置
 		player->setAnchorPoint(Vec2(0.5,0.5));
+		player->bindPhysicsBody();
 		player->setXY(x, y);
 		//log("x:::%d  %d", offsetX,offsetY);
 		player->setPosition(x,y);
+		player->setTag(PLAYER_TAG);
 		//标记角色
 		//Hero hero_;
 		Shirley shirley;
@@ -74,8 +39,33 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 	
 	return nullptr;
 }
+bool Player::bindPhysicsBody()
+{
+	auto physicsBody = cocos2d::PhysicsBody::createBox(m_hero->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 1.0f, 0.0f));
+	physicsBody->setDynamic(false);
+	physicsBody->setGravityEnable(false);
+	physicsBody->setRotationEnable(false);
+	physicsBody->setContactTestBitmask(PLAYER_CONTACT_MASK);
+	physicsBody->setCategoryBitmask(PLAYER_CATEGORY_MASK);
+	m_hero->setPhysicsBody(physicsBody);
+	m_hero->setTag(PLAYER_TAG);
+	return true;
+}
+bool Player::bindMonsterBulletPhysicsBody(Sprite* bullet)
+{
+	auto physicsBody = cocos2d::PhysicsBody::createBox(m_hero->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 0.0f, 0.0f));
+	physicsBody->setDynamic(false);
+	physicsBody->setGravityEnable(false);
+	physicsBody->setRotationEnable(false);
+	physicsBody->setContactTestBitmask(PLAYER_BULLET_CONTACT_MASK);
+	physicsBody->setCategoryBitmask(PLAYER_BULLET_CATEGORY_MASK);
+	bullet->setPhysicsBody(physicsBody);
+	bullet->setTag(PLAYER_BULLET_TAG);
+	return true;
+}
 void Player::move()
 {
+	
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move),m_speed);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_mouse));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_animate));
@@ -121,6 +111,8 @@ void Player::move()
 	 auto right = cocos2d::EventKeyboard::KeyCode::KEY_D;
 	 auto down = cocos2d::EventKeyboard::KeyCode::KEY_S;
 	 auto up = cocos2d::EventKeyboard::KeyCode::KEY_W;
+	 
+	 
 
 	 this->setCascadeOpacityEnabled(true);
 	 if (grassTest())
@@ -183,7 +175,7 @@ void Player::move()
 	 else
 		 current_is_stand = false;
  }
-
+ 
  float Player::getFacingDistance(float point_x, float point_y)
  {
 	 float res = point_x - point_y;
@@ -227,7 +219,8 @@ void Player::move()
 	 //m_facingPoint = tileCoordForPosition(Vec2(e->getCursorX(), e->getCursorY()));
 	
 	 m_facingPoint = Vec2(e->getCursorX() , e->getCursorY() )- viewPos;
-	 
+	 //log("henfana::%f,====%f",offsetX, offsetY);
+	 //log("henfana::%f,====%f", m_facingPoint.x, m_facingPoint.y);
  }
 
  void Player::update_animate(float delta)
@@ -295,7 +288,7 @@ void Player::move()
 		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
 		 auto moveby = MoveBy::create(0.5f, route);
 		 //log("offsetX:%f,offsetY:%f", offsetX, offsetY);
-		 log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
+		 //log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
 		 Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
 		 auto cache = SpriteFrameCache::getInstance();
 		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
@@ -304,6 +297,7 @@ void Player::move()
 		 auto spriteframe =
 			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
 		 auto bullet = Sprite::createWithSpriteFrame(spriteframe);
+		 bindMonsterBulletPhysicsBody(bullet);
 		 this->addChild(bullet);
 		 auto arrived = [=]()
 		 {

@@ -14,6 +14,7 @@ public:
 	//Role();
 	
 	void initHeroPicture(Sprite*_player);
+	void initMonsterPicture(Sprite* player);
 	//void initWithMessage(const HeroMessage& msg);
 
 	/*update相关的*/
@@ -69,6 +70,8 @@ public:
 
 	bool collisionTest();//监测是否有障碍物
 	bool grassTest();//监测是否走到草里了
+	//使monster得到一个随机的坐标。
+	//Point getRedomPos();
 
 	void setXY(int x, int y);
 	Point tileCoordForPosition(Point pos);
@@ -76,11 +79,16 @@ public:
 	void bind_map(TMXTiledMap* battlemap,
 		TMXLayer* meta_barrier,
 		TMXLayer* meta_grass);
-
+	Point viewPos;
 	Sprite* m_hero = nullptr;
-
+	Sprite* m_monster = nullptr;
+	//从player中可以直接放在Role中   
+	Point getRedomPos(int num);
+	void setRedom(int ix) { redomNum = ix; }
+	int redomNum;
+	bool is_facingStatueChanged = false;
+	bool is_standStatueChanged = true;
 protected:
-	int pos;//在几号位置
 	float originx;//初始的位置
 	float originy;
 	float offsetX = 0;//当前的位置

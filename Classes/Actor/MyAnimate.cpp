@@ -8,7 +8,7 @@ Animate* MyAnimate::creatHeroAnimate(int hero_type, const char* direction,  int 
 	
 	char strPlistName[100];
 		sprintf(strPlistName, "hero/hero%d%s.plist",hero_type,direction);
-	log(strPlistName);
+	//log(strPlistName);
 	cache->addSpriteFramesWithFile(strPlistName);
 	
 	Vector<SpriteFrame*> frameVec;

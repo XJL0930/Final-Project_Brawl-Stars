@@ -2,6 +2,8 @@
 #include "Actor\Player.h"
 #include "Hero\Hero.h"
 #include "Actor\Role.h"
+#include"Const/const.h"
+#define MAXMONSTER 10
 
 BattleScene* BattleScene::create(int testIndex /* = 1 */)
 {
@@ -10,6 +12,7 @@ BattleScene* BattleScene::create(int testIndex /* = 1 */)
 		    auto scene = new(std::nothrow) BattleScene("Scene/desert_map/desert_map.tmx");
 		    if (scene && scene->init())
 		    {
+				//scene->retain();
 			    scene->autorelease();
 			    return scene;
 		    }
@@ -32,6 +35,7 @@ bool BattleScene::init()
 	if (!(this->Scene::init() && this->Scene::initWithPhysics()))
 		return false;
 	//this->setTag(0);
+	this->setTag(BATTLE_SCENE);
 	this->addChild(battlemap,0);
 	return true;
 }
@@ -42,18 +46,20 @@ Scene* BattleScene::createScene()
 
 	if (scene != nullptr)
 	{
-
-		GameTimer* m_timer = GameTimer::createTimer(180);
-		m_timer->setPosition(200, 700);
-		this->addChild(m_timer);
 		scene->addChild(this, 0);
 		scene->getPhysicsWorld()->setAutoStep(true);
 		scene->getPhysicsWorld()->setGravity(cocos2d::Vec2::ZERO);
 		scene->retain();
+		
 		this->setcircle();
 		this->bindPlayer(Player::create("hero/hero1_begin.png"));
+	
 		my_player->move();
-
+		BattleScene::initPosition();
+		this->schedule(CC_SCHEDULE_SELECTOR(BattleScene::initMonster));
+		auto contactListener = EventListenerPhysicsContact::create();
+		contactListener->onContactBegin = CC_CALLBACK_1(BattleScene::onContactBegin, this);
+		_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 		return scene;
 	}
 	return nullptr;
@@ -66,10 +72,24 @@ void BattleScene::bindPlayer(Player* _player)
 		_player->bind_map(battlemap, meta_barrier, meta_grass);
 
 		this->my_player = _player;
-		battlemap->addChild(my_player,3);
+		
+		battlemap->addChild(my_player,3,PLAYER_TAG);
+		
 	}
 }
 
+Monster* BattleScene::bindMonster(Monster* _monster,int num)
+{
+	if (_monster != nullptr && my_monster[num] == nullptr)
+	{
+		_monster->bind_map(battlemap, meta_barrier, meta_grass);
+
+		this->my_monster[num] =_monster ;
+		battlemap->addChild(my_monster[num]);
+		
+	}
+	return _monster;
+}
 BattleScene::BattleScene(std::string mapname/*»¹Òª¼ÌÐø¼ÓÈëÈËÎïÀàµÄdata memberµÄ³õÊ¼»¯*/) {
 	battlemap=TMXTiledMap::create(mapname);
 
@@ -77,6 +97,7 @@ BattleScene::BattleScene(std::string mapname/*»¹Òª¼ÌÐø¼ÓÈëÈËÎïÀàµÄdata memberµÄ³
 	this->meta_barrier->setVisible(false);
 	this->meta_grass = battlemap->getLayer("meta_grass");
 	this->meta_grass->setVisible(false);
+	battlemap->setTag(MAP_TAG);
 };
 
 void BattleScene::setcircle()
@@ -110,4 +131,124 @@ void BattleScene::setcircle()
 	auto scaleto4 = ScaleTo::create(180, 0.0f, 0.0f);
 	line4->runAction(Spawn::createWithTwoActions(moveto4, scaleto4));
 	return;
+}
+void BattleScene::initPosition()
+{
+	initPos[1] = Point(1471, 1430);
+	initPos[2] = Point(1458, 1006);
+	initPos[3] = Point(1440, 654);
+	initPos[4] = Point(1474, 110);
+	initPos[5] = Point(957, 150);
+	initPos[6] = Point(149, 92);
+	initPos[7] = Point(166, 645);
+	initPos[8] = Point(128, 1129);
+	initPos[9] = Point(142, 1550);
+	initPos[10] = Point(917, 1374);
+	//²úÉúÄÇÊ®¸öÎ»ÖÃµÄËæ»úÖµ
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < maxMonsterNum; ++i)
+	{
+		redomPos[i] = rand() % 10+1;
+		for(int j=0;j<i;++j)
+		{
+			if (redomPos[j] == redomPos[i])
+			{
+				redomPos[i] = rand() % MAXMONSTER+1;
+				continue;
+			}
+		}
+		log("redomPos::%d", redomPos[i]);
+	}
+	return;
+}
+void BattleScene::initMonster(float dealt)
+{
+	//ÒòÎªÒªÉú³É×î¶à10¸ömonster£¬ËùÒÔÖ±½ÓÉèÖÃÎª¸üÐÂº¯Êý£¬¶ø²»ÊÇÓÃforÑ­»·
+	if (currentMonsterNum < maxMonsterNum)
+	{
+		//log("has been going");
+		Monster* _monster = nullptr;
+		_monster=this->bindMonster(Monster::create("hero/hero1_begin.png", maxMonsterNum,
+			initPos[redomPos[currentMonsterNum]], currentMonsterNum),currentMonsterNum);
+		log("zhsooihawoefklsdfl");
+		//´Ë´¦Ó¦¸ÃÊÇ×öÒ»¸öswitchµÄÓ¢ÐÛÑ¡Ôñº¯Êý
+		if (_monster != nullptr)
+		{
+			
+		    _monster->move();
+			log("Point::%f,%f",_monster->getPosition().x, _monster->getPosition().y);
+		}
+		/*else
+			return;*/
+		++currentMonsterNum;
+	}
+}
+bool BattleScene::onContactBegin(PhysicsContact& contact)
+{
+	int node = getTag();
+	log(",,,,,,,,,,,,%d,%d", MONSTER_TAG,PLAYER_TAG);
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA && nodeB)
+	{
+		int tagA = nodeA->getTag();
+		int tagB = nodeB->getTag();
+		log("onContact!! tagA = %d, tagB = %d", tagA, tagB);
+		if ((nodeA->getTag() == PLAYER_BULLET_TAG || nodeA->getTag() == MONSTER_BULLET_TAG)
+			&& (nodeB->getTag() == PLAYER_BULLET_TAG || nodeB->getTag() == MONSTER_BULLET_TAG)) {
+			nodeB->removeFromParentAndCleanup(true);
+			nodeA->removeFromParentAndCleanup(true);
+		}
+		if ((tagA == MONSTER_TAG || tagB == MONSTER_TAG) )
+		{
+			
+			monsterAttacked(nodeA, nodeB);
+		}
+		if (tagA == PLAYER_TAG || tagB == PLAYER_TAG)
+		{
+			
+			playerAttacked(nodeA, nodeB);
+		}
+			
+
+		// µ±playerµÄ·ÉïÚÅöµ½µÐÈË»òÕßµÐÈËµÄ·ÉïÚ£¬½«ËüÃÇÉ±ËÀ
+	   /* if ((nodeA->getTag() == PLAYER_TAG || nodeA->getTag() == MONSTER_TAG)
+			&& (nodeB->getTag() == PLAYER_BULLET_TAG || nodeB->getTag() == MONSTER_BULLET_TAG)) {
+			nodeA->removeFromParentAndCleanup(true);
+			nodeB->removeFromParentAndCleanup(true);
+		}*/
+		//Èç¹ûÊÇ¶þÕßµÄ·ÉïÚÏàÓö£¬ÔòÁ½¸öÖ±½Ó¶¼ÏûÊ§¡£
+		
+	}
+	return true;
+}
+void BattleScene::monsterAttacked(Node* a, Node* b)
+{
+	
+	isCurrentMonsterLive = false;
+	--maxMonsterNum;
+	a->removeFromParentAndCleanup(true);
+	b->removeFromParentAndCleanup(true);
+	log("ooooooooooooooooooo");
+	if (maxMonsterNum == 0)
+	{
+
+		//Direction::½áÊø»­Ãæ¡£
+	}
+	isCurrentMonsterLive = true;
+}
+void BattleScene::playerAttacked(Node* a, Node* b)
+{
+	
+	isCurrentPlayerLive = false;
+	
+		if (!isCurrentMonsterLive)
+		{
+			a->removeFromParentAndCleanup(true);
+			b->removeFromParentAndCleanup(true);
+			log("ooooooooooooooooooo");
+			//Direction::½áÊø»­Ãæ¡£
+		}
+		
+	isCurrentMonsterLive = true;
 }
