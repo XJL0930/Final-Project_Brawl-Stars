@@ -4,89 +4,89 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Hero1_up_1.png</key>
+            <key>Hero2_right_1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-0.5,-1.5}</string>
+                <string>{-1,-2}</string>
                 <key>spriteSize</key>
-                <string>{31,50}</string>
+                <string>{35,56}</string>
                 <key>spriteSourceSize</key>
-                <string>{54,55}</string>
+                <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{31,50}}</string>
+                <string>{{37,1},{35,56}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
-                <string>1 2 3 0 1 3</string>
+                <string>2 3 4 0 2 4 0 1 2</string>
                 <key>vertices</key>
-                <string>42 54 11 54 11 4 42 4</string>
+                <string>34 59 14 60 4 33 10 4 39 4</string>
                 <key>verticesUV</key>
-                <string>32 51 1 51 1 1 32 1</string>
+                <string>67 56 47 57 37 30 43 1 72 1</string>
             </dict>
-            <key>Hero1_up_2.png</key>
+            <key>Hero2_right_2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,-2}</string>
+                <string>{-1,-2.5}</string>
                 <key>spriteSize</key>
-                <string>{31,49}</string>
+                <string>{31,53}</string>
                 <key>spriteSourceSize</key>
-                <string>{55,55}</string>
+                <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{67,1},{31,49}}</string>
+                <string>{{109,1},{31,53}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
                 <string>1 2 3 0 1 3</string>
                 <key>vertices</key>
-                <string>43 54 12 54 12 5 43 5</string>
+                <string>37 59 6 59 6 6 37 6</string>
                 <key>verticesUV</key>
-                <string>98 50 67 50 67 1 98 1</string>
+                <string>140 54 109 54 109 1 140 1</string>
             </dict>
-            <key>Hero1_up_3.png</key>
+            <key>Hero2_right_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-0.5,-1.5}</string>
+                <string>{-0.5,-0.5}</string>
                 <key>spriteSize</key>
-                <string>{31,50}</string>
+                <string>{36,59}</string>
                 <key>spriteSourceSize</key>
-                <string>{54,55}</string>
+                <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{31,50}}</string>
+                <string>{{1,1},{36,59}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
-                <string>1 2 3 0 1 3</string>
+                <string>2 3 4 0 2 4 0 1 2</string>
                 <key>vertices</key>
-                <string>42 54 11 54 11 4 42 4</string>
+                <string>34 59 14 60 4 33 9 4 40 1</string>
                 <key>verticesUV</key>
-                <string>32 51 1 51 1 1 32 1</string>
+                <string>31 59 11 60 1 33 6 4 37 1</string>
             </dict>
-            <key>Hero1_up_4.png</key>
+            <key>Hero2_right_4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-1.5,-2}</string>
+                <string>{-1,-2}</string>
                 <key>spriteSize</key>
-                <string>{31,49}</string>
+                <string>{33,54}</string>
                 <key>spriteSourceSize</key>
-                <string>{54,55}</string>
+                <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{34,1},{31,49}}</string>
+                <string>{{74,1},{33,54}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
                 <string>1 2 3 0 1 3</string>
                 <key>vertices</key>
-                <string>41 54 10 54 10 5 41 5</string>
+                <string>38 59 5 59 5 5 38 5</string>
                 <key>verticesUV</key>
-                <string>65 50 34 50 34 1 65 1</string>
+                <string>107 55 74 55 74 1 107 1</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -98,13 +98,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>hero1up.png</string>
+            <string>hero2right.png</string>
             <key>size</key>
-            <string>{99,52}</string>
+            <string>{141,61}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9cb20eaabe224de790c282c733a06cc9:33dec6fe1bdad9742ab1fac5cca1186e:2e8d26f3b30e31f946474d7c795f1ff5$</string>
+            <string>$TexturePacker:SmartUpdate:a0e77218ca3eeb9b1cb971f34db24647:0b974ad46066c51353eba25041983abc:b696c2e2d7af6994825ef817649dedfd$</string>
             <key>textureFileName</key>
-            <string>hero1up.png</string>
+            <string>hero2right.png</string>
         </dict>
     </dict>
 </plist>

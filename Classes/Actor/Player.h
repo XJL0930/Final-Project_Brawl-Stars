@@ -17,7 +17,7 @@ public:
 	//void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//添加了键盘按下的事件
 	//void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//添加了键盘松开这个事件
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;//用于在将键盘连续的按下可以移动。
-	Point viewPos;
+	
 	//void onMouseLeftPressed(cocos2d::EventMouse::MouseButton keyCode, cocos2d::Event* event);
 	//void onMouseLeftReleased(cocos2d::EventMouse::MouseButton keyCode, cocos2d::Event* event);
 	//std::map<EventMouse::MouseEventType, bool> mouses;//用于在将鼠标左键按下时能够持续发射精灵
@@ -27,12 +27,16 @@ public:
 	//static Player* create(const std::string& name);
 	static Player* create(const std::string& name, float offsetX=StartX, float offsetY=StartY);//重载用于构造初始位置
 	
-	
+	//Point getPlayerPosition() { return Vec2(offsetX, offsetY); }
 	//virtual void stand();
 	virtual void move();//用于移动的函数
-
+	bool bindPhysicsBody();
+	bool bindMonsterBulletPhysicsBody(Sprite* bullet);
+	
 	//virtual void attack();
 
+
+	//void exit();//用于注销所有注册过的事件；
 	/*下面三个函数用于控制当人物静止时的操作*/
 	void update(float delta);
 	void update_mouse(float delta);//更新函数，用于检测当前mouse的位置。
@@ -43,7 +47,7 @@ public:
 	void update_setViewPointByPlayer(float dt);//更新视角
 	void update_weaponOut(float delta);
 	float getFacingDistance(float point_x,float point_y);//得到当mouse的x,y与人物的距离
-
+	Point getOffset() { return Point(offsetX, offsetY); }
 	/*virtual void attack();//用于攻击的函数
 	virtual void skill();
 	//virtual void injured();//用于展示受伤的函数
@@ -51,12 +55,9 @@ public:
 
 	void runStateEffect(int id);*/
 private:
-
 	float m_state_lastTime;
-	bool is_facingStatueChanged = false;
-	bool is_standStatueChanged = true;
+	Animate* currentAnimate = stand_left;
 	//double maxLength=300;
-	Animate* currentAnimate = nullptr;
 
 };
 #endif// !__HERO__H__

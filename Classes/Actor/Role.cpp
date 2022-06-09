@@ -1,4 +1,5 @@
 #include"Role.h"
+#include"Const/const.h"
 
 void Role::bind_hero(Hero &hero) {
 	m_speed = hero.get_speed();
@@ -12,13 +13,9 @@ void Role::bind_hero(Hero &hero) {
 	m_id = hero.get_id();
 	skillCD = hero.get_skillCD();
 	left_animate = hero.getLeftAnimate();
-	cocos2d::log("zhixing l ");
 	right_animate = hero.getRightAnimate();
-	cocos2d::log("zhixing l ");
 	up_animate = hero.getUpAnimate();
-	cocos2d::log("zhixing l ");
 	down_animate = hero.getDownAnimate();
-	cocos2d::log("zhixing l ");
 	stand_left = hero.getStandLeftAnimate();
 	stand_right = hero.getStandRightAnimate();
 	stand_up = hero.getStandUpAnimate();
@@ -29,7 +26,14 @@ void Role::bind_hero(Hero &hero) {
 void Role::initHeroPicture(Sprite* _player)
 {
 	m_hero = _player;
+	
 	this->addChild(m_hero);
+	return;
+}
+void Role::initMonsterPicture(Sprite* player)
+{
+	m_monster = player;
+	this->addChild(m_monster);
 	return;
 }
 Sprite* Role::getPlayer()
@@ -91,6 +95,7 @@ bool Role::collisionTest()
 	return false;
 }
 
+
 bool Role::grassTest()
 {
 	int gid = 0;
@@ -135,4 +140,41 @@ void Role::bind_map(TMXTiledMap* battlemap,
 	this->m_map = battlemap;
 	this->meta_barrier = _meta_barrier;
 	this->meta_grass = _meta_grass;
+}
+Point Role::getRedomPos(int num)
+{
+	Point nowPosition = this->getPosition();
+	/*Size mapSize = m_map->getContentSize();
+	Size tileSize = m_map->getTileSize();*/
+	Point mapSize = Vec2(1555, 1650);
+	Point nextPosition;
+	
+	do {
+		float redomXsize, redomYsize;
+		srand((unsigned)time(NULL)+num);
+		int i = rand() % 4;
+		if (i == 0)
+		{
+			 redomXsize = (rand() % 10 + 1)*10;
+			 redomYsize = (rand() % 10 + 1)*10;
+		}
+		else if(i==1)
+		{
+			redomXsize = ((-1) * (rand() % 10 + 1))*10;
+			redomYsize = ((-1) * (rand() % 10 + 1))*10;
+		}
+		else if (i == 2)
+		{
+			redomXsize =  (rand() % 10 + 1) * 10;
+			redomYsize = ((-1) * (rand() % 10 + 1)) * 10;
+		}
+		else if (i == 3)
+		{
+			redomXsize = ((-1) * (rand() % 10 + 1)) * 10;
+			redomYsize =  (rand() % 10 + 1) * 10;
+		}
+		nextPosition = nowPosition + Point(redomXsize, redomYsize);
+	} while (nextPosition > mapSize && !collisionTest());
+	//log("newPosotion:%f,%f", nextPosition.x, nextPosition.y);
+	return nextPosition;
 }
