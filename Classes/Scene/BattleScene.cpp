@@ -3,6 +3,7 @@
 #include "Hero\Hero.h"
 #include "Actor\Role.h"
 #include"Const/const.h"
+#include"PauseBox.h"
 #define MAXMONSTER 10
 
 BattleScene* BattleScene::create(int testIndex /* = 1 */)
@@ -35,11 +36,34 @@ bool BattleScene::init()
 	if (!(this->Scene::init() && this->Scene::initWithPhysics()))
 		return false;
 	//this->setTag(0);
+	initUI();
 	this->setTag(BATTLE_SCENE);
 	this->addChild(battlemap,0);
 	return true;
 }
-
+void BattleScene::initUI()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	_pauseButton = ui::Button::create("pausebutton.png");
+	_pauseButton->setAnchorPoint(Vec2(0, 1));
+	_pauseButton->setPosition(Vec2(0, visibleSize.height));
+	this->addChild(_pauseButton, 2);
+	_pauseButton->addClickEventListener([this](Ref* ref) {
+		/*this->unscheduleUpdate();*/
+		Director::getInstance()->pause();
+		auto pausebox = PauseBox::create();
+		//pausebox->setContentSize(Size(100,200));
+		pausebox->registerCallBack([this, pausebox]() {
+			//pausebox->removeFromParent(); 
+			removeChild(pausebox);
+			//this->scheduleUpdate();
+			Director::getInstance()->resume();
+			}, [this, pausebox]() {
+				Director::getInstance()->end();
+			});
+		this->addChild(pausebox);
+		});
+}
 Scene* BattleScene::createScene()
 {
 	auto scene = Scene::createWithPhysics();

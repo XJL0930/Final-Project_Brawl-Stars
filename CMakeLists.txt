@@ -60,9 +60,11 @@ list(APPEND GAME_SOURCE
      Classes/Scene/StartGameScene.cpp
 	 Classes/Scene/BattleScene.cpp
 	 Classes/Scene/Choice_ai.cpp
+	 Classes/Scene/PauseBox.cpp
 	 Classes/Actor/Role.cpp
 	 Classes/Actor/Player.cpp
 	 Classes/Actor/MyAnimate.cpp
+	 Classes/Actor/Monster.cpp
 	 Classes/Hero/Shirley.cpp
      )
 list(APPEND GAME_HEADER
@@ -70,11 +72,13 @@ list(APPEND GAME_HEADER
      Classes/Scene/StartGameScene.h
      Classes/Scene/BattleScene.h
 	 Classes/Scene/Choice_ai.h
+	  Classes/Scene/PauseBox.h
 	 Classes/Actor/Role.h
 	 Classes/Actor/Player.h
 	 Classes/Actor/MyAnimate.h
 	 Classes/Hero/Shirley.h
 	 Classes/Hero/Hero.h
+	 Classes/Actor/Monster.h
 	 )
 
 if(ANDROID)

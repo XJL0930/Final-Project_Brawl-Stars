@@ -5,6 +5,7 @@
 #include<string>
 #include"Actor/Player.h"
 #include"Actor/Monster.h"
+#include "ui/CocosGUI.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
@@ -13,6 +14,7 @@ public:
 	BattleScene(std::string mapname);
 	//init()函数
 	virtual bool init();
+	virtual void initUI();
 	//用来创建BattleScene类
 	static BattleScene* create(int testIndx = 1);
 	//用来将物理碰撞引入Scene
@@ -38,6 +40,7 @@ protected:
 private:
 	Player* my_player = nullptr;
 	Monster* my_monster[9] = {nullptr};
+	ui::Button* _pauseButton;
 	/*Monster* my_monster2 = nullptr;
 	Monster* my_monster3 = nullptr;
 	Monster* my_monster4 = nullptr;

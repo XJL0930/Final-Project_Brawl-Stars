@@ -1,26 +1,3 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
 
 #include "Choice_ai.h"
 #include "BattleScene.h"
@@ -43,10 +20,11 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in ChoiceAIScene.cpp/n");
 }
 
+
 bool ChoiceAI::init()
 {
 
-    if ( !Scene::init() )
+    if (!Scene::init())
     {
         return false;
     }
@@ -54,121 +32,203 @@ bool ChoiceAI::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto bg = Sprite::create("Scene/Room_AI/brawlball.png");
+    bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    this->addChild(bg);
 
-    auto closeItem = MenuItemImage::create(
-                                           "Scene/Room_AI/start_0_begin.png",
-                                           "Scene/Room_AI/start_0.png",
-                                           CC_CALLBACK_1(ChoiceAI::menuEnterCallback, this));
+    auto select1 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
+    select1->setTag(1);
+    select1->setPosition(1.5 * visibleSize.width / 6, visibleSize.height / 7);
+    auto hero1 = Sprite::create("Scene/Room_AI/8bit.png");
+    hero1->setScale(0.05f);
+    hero1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    hero1->setPosition(select1->getPosition().x, select1->getPosition().y + 30);
+    this->addChild(select1);
+    //touchlisten(select1);
+    this->addChild(hero1);
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
+    auto select2 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
+    select1->setTag(2);
+    select2->setPosition(2.5 * visibleSize.width / 6, visibleSize.height / 7);
+    auto hero2 = Sprite::create("Scene/Room_AI/GT_Max.png");
+    hero2->setScale(0.05f);
+    hero2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    hero2->setPosition(select2->getPosition().x, select2->getPosition().y + 30);
+    this->addChild(select2);
+    //touchlisten(select2);
+    this->addChild(hero2);
+
+    auto select3 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
+    select1->setTag(3);
+    select3->setPosition(3.5 * visibleSize.width / 6, visibleSize.height / 7);
+    auto hero3 = Sprite::create("Scene/Room_AI/nita.png");
+    hero3->setScale(0.05f);
+    hero3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    hero3->setPosition(select3->getPosition().x, select3->getPosition().y + 30);
+    this->addChild(select3);
+    //touchlisten(select3);
+    this->addChild(hero3);
+
+    auto select4 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
+    select1->setTag(4);
+    select4->setPosition(4.5 * visibleSize.width / 6, visibleSize.height / 7);
+    auto hero4 = Sprite::create("Scene/Room_AI/Shelly_2.png");
+    hero4->setScale(0.05f);
+    hero4->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    hero4->setPosition(select4->getPosition().x, select4->getPosition().y + 30);
+    this->addChild(select4);
+    //touchlisten(select4);
+    this->addChild(hero4);
+
+
+    enter->setColor(Color3B::BLACK);
+    float x = origin.x + visibleSize.width - enter->getContentSize().width / 2;
+    float y = origin.y + enter->getContentSize().height / 2;
+    enter->setPosition(Vec2(origin.x + visibleSize.width / 2, y));
+    this->addChild(enter);
+
+    for (int i = 1; i <= 10; i++)
     {
-        problemLoading("'start_0_begin.png' and 'start_0.png'");
+        auto player = Sprite::create("Scene/Room_AI/icon_rank_7.png");
+        player->setTag(i);
+        playervec.push_back(player);
+    }
+    nowButton = playervec[0];
+    for (auto it = playervec.begin(); it != playervec.end(); it++)
+    {
+        static int i = 2;
+        if (i < 7)
+        {
+            (*it)->setPosition((i - 0.5) * visibleSize.width / 7, 5 * visibleSize.height / 7 + 30);
+            this->addChild((*it));
+        }
+        if (i >= 7)
+        {
+            (*it)->setPosition((i - 5 - 0.5) * visibleSize.width / 7, 4 * visibleSize.height / 7);
+            this->addChild((*it));
+        }
+        i++;
+    }
+
+    auto listenter = EventListenerTouchOneByOne::create();
+    listenter->onTouchBegan = [=](Touch* t, Event* e) {
+        return true;
+    };
+    listenter->onTouchEnded = [=](Touch* t, Event* e) {
+        if (select1->getBoundingBox().containsPoint(t->getLocation()))
+        {
+            heroPath[nowButton->getTag()] = "hero/hero1_begin.png";
+
+            // 将现在的player指针指向1号英雄
+            // 将指针指向下一个player的选择
+            auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
+            selected->setPosition(nowButton->getPosition());
+            this->addChild(selected);
+            nextone();
+        }
+        else if (select2->getBoundingBox().containsPoint(t->getLocation()))
+        {
+            heroPath[nowButton->getTag()] = "";
+            auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
+            selected->setPosition(nowButton->getPosition());
+            this->addChild(selected);
+            nextone();
+        }
+        else if (select3->getBoundingBox().containsPoint(t->getLocation()))
+        {
+            heroPath[nowButton->getTag()] = "";
+            auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
+            selected->setPosition(nowButton->getPosition());
+            this->addChild(selected);
+            nextone();
+        }
+        else if (select4->getBoundingBox().containsPoint(t->getLocation()))
+        {
+            heroPath[nowButton->getTag()] = "";
+            auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
+            selected->setPosition(nowButton->getPosition());
+            this->addChild(selected);
+            nextone();
+        }
+        if (enter->getBoundingBox().containsPoint(t->getLocation()))
+        {
+            if (nowButton->getTag() != 10)
+            {
+                auto tip = Label::createWithTTF("Please select ten heros", "fonts/arial.ttf", 30);
+                tip->setColor(Color3B::RED);
+                tip->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 20);
+                //tip->setPosition(nowButton->getPosition());
+                this->addChild(tip);
+                auto out = [=]()
+                {
+                    this->removeChild(tip, true);
+                };
+                auto callfunc = CallFunc::create(out);
+                tip->runAction(Sequence::create(DelayTime::create(2), callfunc, NULL));
+
+            }
+        }
+    };
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listenter, this);
+}
+void ChoiceAI::nextone()
+{
+    if (nowButton->getTag() == 1)
+    {
+        nowButton = playervec[1];
+    }
+    else if (nowButton->getTag() == 2)
+    {
+        nowButton = playervec[2];
+    }
+    else if (nowButton->getTag() == 3)
+    {
+        nowButton = playervec[3];
+    }
+    else if (nowButton->getTag() == 4)
+    {
+        nowButton = playervec[4];
+    }
+    else if (nowButton->getTag() == 5)
+    {
+        nowButton = playervec[5];
+    }
+    else if (nowButton->getTag() == 6)
+    {
+        nowButton = playervec[6];
+    }
+    else if (nowButton->getTag() == 7)
+    {
+        nowButton = playervec[7];
+    }
+    else if (nowButton->getTag() == 8)
+    {
+        nowButton = playervec[8];
+    }
+    else if (nowButton->getTag() == 9)
+    {
+        nowButton = playervec[9];
+    }
+    else if (nowButton->getTag() == 10)
+    {
+        auto listenter = EventListenerTouchOneByOne::create();
+        listenter->onTouchBegan = [=](Touch* t, Event* e) {
+            return true;
+        };
+        listenter->onTouchEnded = [=](Touch* t, Event* e) {
+            if (enter->getBoundingBox().containsPoint(t->getLocation()))
+            {
+                menuEnterCallback();
+            }
+        };
+        Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listenter, this);
     }
     else
     {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(origin.x + visibleSize.width / 2,y));
     }
-
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-
-    auto label = Label::createWithTTF("ROOM", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
-        this->addChild(label,1);
-    }
-
-    auto sprite = Sprite::create("Scene/Room_AI/bg.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'bg.png'");
-    }
-    else
-    {
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-        //改变尺寸
-        sprite->setScale(0.5f);
-        this->addChild(sprite, 0);
-    }
-
-    //添加人物
-    auto player = Sprite::create("Scene/Room_AI/player.png");
-    player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    this->addChild(player);
-
-    //添加音乐
-    auto button_music_start = Button::create("Scene/Room_AI/music_1.png");
-    button_music_start->setPosition(Vec2(visibleSize.width / 10 + origin.x, visibleSize.height));
-    button_music_start->addClickEventListener([=](Ref* sender) {
-        SimpleAudioEngine::getInstance()->playBackgroundMusic("beginMusic.mp3", true);
-        });
-    this->addChild(button_music_start);
-
-    //添加按钮
-    auto button_0 = Button::create("Scene/Room_AI/have.png", "Scene/Room_AI/end.png", "Scene/Room_AI/delete.png");
-    this->addChild(button_0);
-    button_0->setPosition(Vec2(visibleSize.width / 8 + origin.x, visibleSize.height / 4 + origin.y));
-    button_0->addTouchEventListener([=](Ref* ref, ui::Widget::TouchEventType type)
-        {
-            if (type == ui::Widget::TouchEventType::ENDED) {
-                auto ai_0 = Sprite::create("Scene/Room_AI/ai.png");
-                ai_0->setPosition(Vec2(visibleSize.width / 8 + origin.x, visibleSize.height / 2 + origin.y));
-                this->addChild(ai_0);
-            }
-        });
-
-    auto button_1 = Button::create("Scene/Room_AI/have.png", "Scene/Room_AI/end.png", "Scene/Room_AI/delete.png");
-    this->addChild(button_1);
-    button_1->setPosition(Vec2(visibleSize.width / 3 + origin.x, visibleSize.height / 4 + origin.y));
-    button_1->addTouchEventListener([=](Ref* ref, ui::Widget::TouchEventType type)
-        {
-            if (type == ui::Widget::TouchEventType::ENDED) {
-                auto ai_1 = Sprite::create("Scene/Room_AI/ai.png");
-                ai_1->setPosition(Vec2(visibleSize.width / 3 + origin.x, visibleSize.height / 2 + origin.y));
-                this->addChild(ai_1, 0);
-            }
-        });
-
-    auto button_2 = Button::create("Scene/Room_AI/have.png", "Scene/Room_AI/end.png", "Scene/Room_AI/delete.png");
-    this->addChild(button_2);
-    button_2->setPosition(Vec2(2*visibleSize.width / 3 + origin.x, visibleSize.height / 4 + origin.y));
-    button_2->addTouchEventListener([=](Ref* ref, ui::Widget::TouchEventType type)
-        {
-            if (type == ui::Widget::TouchEventType::ENDED) {
-                auto ai_2 = Sprite::create("Scene/Room_AI/ai.png");
-                ai_2->setPosition(Vec2(2 * visibleSize.width / 3 + origin.x, visibleSize.height / 2 + origin.y));
-                this->addChild(ai_2, 0);
-            }
-        });
-
-    auto button_3 = Button::create("Scene/Room_AI/have.png", "Scene/Room_AI/end.png", "Scene/Room_AI/delete.png");
-    this->addChild(button_3);
-    button_3->setPosition(Vec2(7*visibleSize.width / 8 + origin.x, visibleSize.height / 4 + origin.y));
-    button_3->addTouchEventListener([=](Ref* ref, ui::Widget::TouchEventType type)
-        {
-            if (type == ui::Widget::TouchEventType::ENDED) {
-                auto ai_3 = Sprite::create("Scene/Room_AI/ai.png");
-                ai_3->setPosition(Vec2(7 * visibleSize.width / 8 + origin.x, visibleSize.height / 2 + origin.y));
-                this->addChild(ai_3, 0);
-            }
-        });
-    return true;
 }
 
-
-void ChoiceAI::menuEnterCallback(Ref* pSender)
+void ChoiceAI::menuEnterCallback()
 {
     //Close the cocos2d-x game scene and quit the application
     auto battleScene = BattleScene::create();

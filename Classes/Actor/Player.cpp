@@ -280,24 +280,114 @@ void Player::move()
  //}
  void Player::update_weapon(float delta)
  {
-	 if (isMousePressed)
+	 //按一次，发三个方向的子弹，每一列子弹有4个，每颗都是sprite放在bulletvec里
+	 // 一次移动10码，总共循环20次，每一次判断是否遭到碰撞
+	 //if (isMousePressed)//需要改成只按一次
+	 //{
+		// double nowlength = sqrt(pow(m_facingPoint.x - offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
+		// double rate = 200 / nowlength;
+		// const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
+		// const Vec2 route_1 = Vec2(route.x * (sqrt(3) / 2.0) + route.y * (0.5), route.x * (-0.5) + route.y*(sqrt(3) / 2.0));
+		// const Vec2 route_2 = Vec2(route.x * (sqrt(3) / 2.0) - route.y * (0.5), route.x * (0.5) + route.y*(sqrt(3) / 2.0));
+
+		// 
+		// auto moveby1 = MoveBy::create(0.5f, route);
+		// auto moveby2 = MoveBy::create(0.5f, route_1);
+		// auto moveby3 = MoveBy::create(0.5f, route_2);
+		// 
+
+		// auto cache = SpriteFrameCache::getInstance();
+		// cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
+		// auto spriteframe =
+		//	 	 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		//	  auto bullet1 = Sprite::createWithSpriteFrame(spriteframe);
+		//	  auto bullet2 = Sprite::createWithSpriteFrame(spriteframe);
+		//	  auto bullet3 = Sprite::createWithSpriteFrame(spriteframe);
+
+		//	  this->addChild(bullet1);
+		//	  this->addChild(bullet2);
+		//	  this->addChild(bullet3);
+		//	  auto arrived = [=]()
+		//	  {
+		//	 	 this->removeChild(bullet1, true);
+		//		 this->removeChild(bullet2, true);
+		//		 this->removeChild(bullet3, true);
+		//	  };
+		//	  auto callfunc = CallFunc::create(arrived);
+		//	  //log("%f,%f", heropos.x, heropos.y);
+		//	  //bullet->setanchorpoint(point(0.5, 0.5));
+
+		//	  bullet1->setPosition(
+		//	 	 offsetX - originx,
+		//	 	 offsetY - originy);
+		//	  bullet2->setPosition(
+		//		  offsetX - originx,
+		//		  offsetY - originy);
+		//	  bullet3->setPosition(
+		//		  offsetX - originx,
+		//		  offsetY - originy);
+		//	  bullet1->runAction(moveby1);
+		//	  bullet2->runAction(moveby2);
+		//	  bullet3->runAction(moveby3);
+	 //}
+
+	 // 按一次发一排子弹 
+
+
+
+
+
+
+
+	 // 回旋镖n 
+	 /*if (isMousePressed)
 	 {
-		 //log("mouse pressed");
-		 double nowlength = sqrt(pow(m_facingPoint.x -offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
+		 double nowlength = sqrt(pow(m_facingPoint.x - offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
 		 double rate = 200 / nowlength;
 		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
 		 auto moveby = MoveBy::create(0.5f, route);
-		 //log("offsetX:%f,offsetY:%f", offsetX, offsetY);
-		 //log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
-		 Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
+		 auto moveto = MoveTo::create(0.9f, Vec2(offsetX - originx, offsetY - originy));
+
 		 auto cache = SpriteFrameCache::getInstance();
 		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
-		 //log("weaponcache is done!"); 
+		 auto spriteframe =
+			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		 auto bullet3 = Sprite::createWithSpriteFrame(spriteframe);
+		 bullet3->setPosition(
+			 offsetX - originx,
+			 offsetY - originy);
+		 this->addChild(bullet3);
+		 bullet3->runAction(Sequence::create(moveby, moveto, NULL));
+	 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+	 // 一个方向一直发射
+
+	 if (isMousePressed)
+	 {
+		 //log("mouse pressed");
+		 double nowlength = sqrt(pow(m_facingPoint.x - offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
+		 double rate = 200 / nowlength;
+		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
+		 //把一次移动的moveby的长度微分，设置循环使其到达终点
+		 log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
+		 auto cache = SpriteFrameCache::getInstance();
+		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
+		 //log("weaponcache is done!");
 
 		 auto spriteframe =
 			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
 		 auto bullet = Sprite::createWithSpriteFrame(spriteframe);
-		 bindMonsterBulletPhysicsBody(bullet);
 		 this->addChild(bullet);
 		 auto arrived = [=]()
 		 {
@@ -306,25 +396,32 @@ void Player::move()
 		 auto callfunc = CallFunc::create(arrived);
 		 //log("%f,%f", heropos.x, heropos.y);
 		 //bullet->setanchorpoint(point(0.5, 0.5));
-		 
-		 bullet->setPosition(
-			 offsetX-originx,
-			 offsetY-originy);
-		 //this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weaponOut));
-		 // 写一个监听函数，在监听函数里如果遇到碰撞就在运动过程中callfunc，如果没有碰撞，就走完在callfunc
-		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
-	 }
- }
- void Player::update_weaponOut(float delta)
- {
-	 if (!collisionTest())
-	 {
-		 //bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
-	 }
-	 else
-	 {
 
+		 bullet->setPosition(
+			 offsetX - originx,
+			 offsetY - originy);
+		 // this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weaponOut));
+		  // 写一个监听函数，在监听函数里如果遇到碰撞就在运动过程中callfunc，如果没有碰撞，就走完在callfunc
+		/* bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
+		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
+		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));*/
+		 for (int i = 1; i <= 20; i++)
+		 {
+			 auto moveby = MoveBy::create(0.5f, route / 20);
+			 if (i != 20 && !collisionTest())
+			 {
+				 bullet->runAction(moveby);
+			 }
+			 else
+			 {
+				 bullet->runAction(Sequence::create(moveby, callfunc, NULL));
+			 }
+		 }
+
+		 /*bullet->runAction(moveby2);
+		 */
 	 }
+
  }
 void Player::update_setViewPointByPlayer(float dt) {
 	Layer* parent = (Layer*)getParent();

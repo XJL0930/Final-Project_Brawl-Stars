@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "Scene/StartGameScene.h"
-#include "Scene/OptionScene.h"
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
