@@ -32,7 +32,7 @@ public:
 	virtual void move();//用于移动的函数
 	bool bindPhysicsBody();
 	bool bindMonsterBulletPhysicsBody(Sprite* bullet);
-	
+	//void bindBullet(Player* _bullet);
 	//virtual void attack();
 
 
@@ -57,6 +57,7 @@ public:
 private:
 	float m_state_lastTime;
 	Animate* currentAnimate = stand_left;
+	Player* my_bullet = nullptr;
 	//double maxLength=300;
 
 };

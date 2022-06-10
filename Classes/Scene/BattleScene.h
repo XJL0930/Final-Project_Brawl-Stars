@@ -6,6 +6,7 @@
 #include"Actor/Player.h"
 #include"Actor/Monster.h"
 #include "ui/CocosGUI.h"
+#include "Const/const.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
@@ -18,8 +19,9 @@ public:
 	//用来创建BattleScene类
 	static BattleScene* create(int testIndx = 1);
 	//用来将物理碰撞引入Scene
-	Scene* createScene();
+	Scene* createScene(std::map<int, std::string> heroPath);
 	void bindPlayer(Player* _player);
+	void bindBullet(Player* _bullet);
 	Monster* bindMonster(Monster* _monster,int num);
 	void setcircle();//用于设置毒圈
 		//下面是人物出场的初始位置
@@ -37,10 +39,12 @@ protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
+	std::map<int, std::string> _heroPath;
 private:
 	Player* my_player = nullptr;
 	Monster* my_monster[9] = {nullptr};
 	ui::Button* _pauseButton;
+	Player* my_bullet = nullptr;
 	/*Monster* my_monster2 = nullptr;
 	Monster* my_monster3 = nullptr;
 	Monster* my_monster4 = nullptr;

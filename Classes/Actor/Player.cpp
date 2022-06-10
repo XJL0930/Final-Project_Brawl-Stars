@@ -1,7 +1,7 @@
 #include "Player.h"
 #include"Hero\Shirley.h"
 #include"Const/const.h"
-
+#include "Bullet.h"
 void Player::update(float delta) {
 
 }
@@ -26,7 +26,7 @@ Player* Player::create(const std::string& name, float offsetX, float offsetY)
 		player->setAnchorPoint(Vec2(0.5,0.5));
 		player->bindPhysicsBody();
 		player->setXY(x, y);
-		//log("x:::%d  %d", offsetX,offsetY);
+		//log("x:::%f  %", offsetX,offsetY);
 		player->setPosition(x,y);
 		player->setTag(PLAYER_TAG);
 		//标记角色
@@ -65,7 +65,6 @@ bool Player::bindMonsterBulletPhysicsBody(Sprite* bullet)
 }
 void Player::move()
 {
-	
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move),m_speed);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_mouse));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_animate));
@@ -99,8 +98,6 @@ void Player::move()
 	_mouseListener->onMouseMove = CC_CALLBACK_1(Player::onMouseMove, this);
 	//_mouseListener->onMouseDown = CC_CALLBACK_1(Player::onMouseDown, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
-
-	
 	return;
 
 }
@@ -123,6 +120,7 @@ void Player::move()
 	 if (keys[left])
 	 {
 		 offsetX -= 10;
+		
 		 if (!collisionTest())
 		 {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(-10, 0));
@@ -131,11 +129,14 @@ void Player::move()
 		 }
 		 else
 			 offsetX += 10;
+		// log("offsetx:%f,offsety:%f", offsetX, offsetY);
 		 
 	 }
 	 else if (keys[right])
 	 {
 		 offsetX += 10;
+		
+
 		 if (!collisionTest())
 		 {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(10,0));
@@ -144,11 +145,14 @@ void Player::move()
 		 }
 		 else
 			 offsetX -= 10;
+		 //log("offsetx:%f,offsety:%f", offsetX, offsetY);
 		
 	 }
 	 else if (keys[down])
 	 {
 		 offsetY -= 10;
+		 
+
 		 if (!collisionTest()) {
 
 			 auto moveBy = MoveBy::create(m_speed, Vec2(0, -10));
@@ -157,11 +161,14 @@ void Player::move()
 		 }
 		 else 
 			 offsetY += 10;
+		 //log("offsetx:%f,offsety:%f", offsetX, offsetY);
 		
 	 }
 	 else if (keys[up])
 	 {
 		 offsetY += 10;
+		 
+
 		 if (!collisionTest()) {
 			 auto moveBy = MoveBy::create(m_speed, Vec2(0,10));
 
@@ -169,6 +176,7 @@ void Player::move()
 		 }
 		 else
 			 offsetY -= 10;
+		 //log("offsetx:%f,offsety:%f", offsetX, offsetY);
 	 }
 	 if (!keys[up] && !keys[down] && !keys[left] && !keys[right])
 		 current_is_stand = true;
@@ -272,12 +280,7 @@ void Player::move()
 	 }
 
  }
- //void Player::update_route(float delta)
- //{
-	// // 用来实时监测武器的路线，包括起始位置，目标位置
-	// m_currentPoint = m_hero->getPosition();
-	// //log("m_currentPoint:%f,%f", m_currentPoint.x, m_currentPoint.y);
- //}
+
  void Player::update_weapon(float delta)
  {
 	 //按一次，发三个方向的子弹，每一列子弹有4个，每颗都是sprite放在bulletvec里
@@ -379,42 +382,43 @@ void Player::move()
 		 double nowlength = sqrt(pow(m_facingPoint.x - offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
 		 double rate = 200 / nowlength;
 		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
-		 //把一次移动的moveby的长度微分，设置循环使其到达终点
-		 log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
-		 auto cache = SpriteFrameCache::getInstance();
-		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
-		 //log("weaponcache is done!");
-
-		 auto spriteframe =
-			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
-		 auto bullet = Sprite::createWithSpriteFrame(spriteframe);
-		 this->addChild(bullet);
+		 
+		 
+		 Bullet* bullet = Bullet::create("weapon/bullet1.png");
+		 bullet->bind_map(m_map, meta_barrier, meta_grass);
+		 this->addChild(bullet,100);
 		 auto arrived = [=]()
 		 {
 			 this->removeChild(bullet, true);
 		 };
 		 auto callfunc = CallFunc::create(arrived);
-		 //log("%f,%f", heropos.x, heropos.y);
-		 //bullet->setanchorpoint(point(0.5, 0.5));
+		 
+		/* bullet->setPosition(
+			 offsetX - originx,
+			 offsetY - originy);*/
 
 		 bullet->setPosition(
-			 offsetX - originx,
-			 offsetY - originy);
-		 // this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weaponOut));
-		  // 写一个监听函数，在监听函数里如果遇到碰撞就在运动过程中callfunc，如果没有碰撞，就走完在callfunc
-		/* bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
-		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
-		 bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));*/
+			 m_hero->getPosition()
+		 );
+		 //log("beginPos:%f,%f", m_hero->getPosition().x, m_hero->getPosition().y);
+		 bullet->changeOffset(m_hero->getParent()->convertToWorldSpace(m_hero->getPosition()));
+		 
 		 for (int i = 1; i <= 20; i++)
 		 {
+			 bullet->changeOffset(Vec2(route.x/20.0,route.y/20.0));
 			 auto moveby = MoveBy::create(0.5f, route / 20);
-			 if (i != 20 && !collisionTest())
+			 if (i != 20 && !(bullet->collisionTest()))
 			 {
-				 bullet->runAction(moveby);
+				 bullet->runAction(Sequence::create(moveby, callfunc, NULL));
+				 //bullet->runAction(moveby);
 			 }
 			 else
 			 {
-				 bullet->runAction(Sequence::create(moveby, callfunc, NULL));
+				 //bullet->runAction(callfunc);
+				 /*if (bullet != nullptr) {
+					 this->removeChild(bullet, true);
+				 }*/
+				 //bullet->runAction(Sequence::create(moveby, callfunc, NULL));
 			 }
 		 }
 

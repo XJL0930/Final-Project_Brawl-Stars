@@ -2,7 +2,6 @@
 #include "Actor\Player.h"
 #include "Hero\Hero.h"
 #include "Actor\Role.h"
-#include"Const/const.h"
 #include"PauseBox.h"
 #define MAXMONSTER 10
 
@@ -64,8 +63,9 @@ void BattleScene::initUI()
 		this->addChild(pausebox);
 		});
 }
-Scene* BattleScene::createScene()
+Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
 {
+	_heroPath = heroPath;
 	auto scene = Scene::createWithPhysics();
 
 	if (scene != nullptr)
@@ -76,7 +76,7 @@ Scene* BattleScene::createScene()
 		scene->retain();
 		
 		this->setcircle();
-		this->bindPlayer(Player::create("hero/hero1_begin.png"));
+		this->bindPlayer(Player::create(_heroPath[1]));
 	
 		my_player->move();
 		BattleScene::initPosition();
@@ -94,21 +94,21 @@ void BattleScene::bindPlayer(Player* _player)
 	if (_player != nullptr && my_player == nullptr)
 	{
 		_player->bind_map(battlemap, meta_barrier, meta_grass);
-
+		//_bullet->bind_map(battlemap, meta_barrier, meta_grass);
 		this->my_player = _player;
 		
 		battlemap->addChild(my_player,3,PLAYER_TAG);
-		
 	}
 }
 
 Monster* BattleScene::bindMonster(Monster* _monster,int num)
 {
+
 	if (_monster != nullptr && my_monster[num] == nullptr)
 	{
 		_monster->bind_map(battlemap, meta_barrier, meta_grass);
 
-		this->my_monster[num] =_monster ;
+		this->my_monster[num] =_monster;
 		battlemap->addChild(my_monster[num]);
 		
 	}
@@ -190,17 +190,30 @@ void BattleScene::initMonster(float dealt)
 	//因为要生成最多10个monster，所以直接设置为更新函数，而不是用for循环
 	if (currentMonsterNum < maxMonsterNum)
 	{
+		
+		for (int i = 2; i <= 10; i++)
+		{
+			my_monster[i-2] = this->bindMonster(Monster::create(_heroPath[i], maxMonsterNum,
+				initPos[redomPos[currentMonsterNum]], currentMonsterNum), currentMonsterNum);
+		}
 		//log("has been going");
-		Monster* _monster = nullptr;
+		/*Monster* _monster = nullptr;
 		_monster=this->bindMonster(Monster::create("hero/hero1_begin.png", maxMonsterNum,
-			initPos[redomPos[currentMonsterNum]], currentMonsterNum),currentMonsterNum);
+			initPos[redomPos[currentMonsterNum]], currentMonsterNum),currentMonsterNum);*/
 		log("zhsooihawoefklsdfl");
 		//此处应该是做一个switch的英雄选择函数
-		if (_monster != nullptr)
+		bool flag = true;;
+		for (int i = 0; i < 10; i++)
 		{
-			
-		    _monster->move();
-			log("Point::%f,%f",_monster->getPosition().x, _monster->getPosition().y);
+			if (my_monster[i] == nullptr)
+				flag = false;
+		}
+
+    	if (flag)
+		{
+			for(int i=0;i<10;i++)
+				my_monster[i]->move();
+			//log("Point::%f,%f",_monster->getPosition().x, _monster->getPosition().y);
 		}
 		/*else
 			return;*/

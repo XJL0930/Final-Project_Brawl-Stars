@@ -2,6 +2,7 @@
 #ifndef __CHOICE_AI_H__
 #define __CHOICE_AI_H__
 #include "cocos2d.h"
+#include "Const/const.h"
 USING_NS_CC;
 class ChoiceAI : public cocos2d::Scene
 {
@@ -10,11 +11,11 @@ public:
     //std::string heropath;
     std::vector<Sprite*> playervec;
     //std::map<int, bool> buttonmap;
-    std::map<int, std::string> heroPath;
+    
     Sprite* nowButton;
     void nextone();
     virtual bool init();
-
+    std::map<int, std::string> heroPath;
     // a selector callback
     void menuEnterCallback();
     Label* enter = Label::createWithTTF("Play", "fonts/arial.ttf", 40);
