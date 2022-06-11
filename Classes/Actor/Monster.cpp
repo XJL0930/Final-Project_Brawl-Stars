@@ -22,7 +22,7 @@ Monster* Monster::create(const std::string& name, int maxMonster, Point startPos
 		monster->setPosition(startPos);
 		monster->setXY(monster->getPosition().x, monster->getPosition().y);
 		//monster->setTag((monster->redomNum + 1) * 10 + 100);
-		monster->setTag(MONSTER_TAG);
+		//monster->setTag(MONSTER_TAG);
 		monster->bindPhysicsBody();
 		//标记角色
 		Hero hero_;
@@ -36,19 +36,19 @@ Monster* Monster::create(const std::string& name, int maxMonster, Point startPos
 }
 bool Monster::bindPhysicsBody()
 {
-	auto physicsBody = cocos2d::PhysicsBody::createBox(m_monster->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 1.0f, 0.0f));
+	auto physicsBody = cocos2d::PhysicsBody::createBox(this->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 1.0f, 0.0f));
 	physicsBody->setDynamic(false);
 	physicsBody->setGravityEnable(false);
 	physicsBody->setRotationEnable(false);
 	physicsBody->setContactTestBitmask(MONSTER_CONTACT_MASK);
 	physicsBody->setCategoryBitmask(MONSTER_CATEGORY_MASK);
-	m_monster->setPhysicsBody(physicsBody);
-	m_monster->setTag(MONSTER_TAG);
+	this->setPhysicsBody(physicsBody);
+	this->setTag(MONSTER_TAG);
 	return true;
 }
 bool Monster::bindMonsterBulletPhysicsBody(Sprite* bullet)
 {
-	auto physicsBody = cocos2d::PhysicsBody::createBox(m_monster->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 0.0f, 0.0f));
+	auto physicsBody = cocos2d::PhysicsBody::createBox(this->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 0.0f, 0.0f));
 	physicsBody->setDynamic(false);
 	physicsBody->setGravityEnable(false);
 	physicsBody->setRotationEnable(false);
@@ -60,13 +60,15 @@ bool Monster::bindMonsterBulletPhysicsBody(Sprite* bullet)
 }
 void Monster::move()
 {
+	if (m_monster == nullptr)
+		this->unscheduleAllCallbacks();
 	if (m_monster != nullptr)
 	{
 		this->schedule(CC_SCHEDULE_SELECTOR(Monster::updateMove), m_speed);
 		//this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_animate));
 		//runAction(currentAnimate);
 		if (redomNum % 3 == 0)
-			this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_attack), 0.5f);
+			this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_attack), 2.f);
 		//this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_weapon), 0.2f);
 		//this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_setViewPointByPlayer));
 		//this->setCascadeOpacityEnabled(true);
@@ -86,6 +88,8 @@ void Monster::updateMove( float delta)
 	else
 		this->setOpacity(500);	
 	//srand((unsigned)time(NULL)+redomNum);
+	if (m_monster != nullptr)
+		m_monster->stopAction(currentAnimate);
 	srand((unsigned int)setSrand(redomNum) + (unsigned)time(NULL));
 	dir = rand() % 4;
 	switch (dir)
@@ -102,7 +106,8 @@ void Monster::updateMove( float delta)
 				auto moveBy = MoveBy::create(m_speed, Vec2(-10, 0));
 				//测试
 				//runAction(moveBy);
-				m_monster->runAction(Spawn::create(moveBy, left_animate,NULL));
+				//m_monster->runAction( left_animate);
+				this->runAction(moveBy);
 				//runAction(currentAnimate);
 			}
 			else
@@ -119,7 +124,9 @@ void Monster::updateMove( float delta)
 				//log("geiyedong");
 				auto moveBy = MoveBy::create(m_speed, Vec2(10, 0));
 				//runAction(moveBy);
-				m_monster->runAction(Spawn::create(moveBy,right_animate,NULL));
+				//m_monster->runAction(Spawn::create(moveBy,right_animate,NULL));
+				//m_monster->runAction(right_animate);
+				this->runAction(moveBy);
 				//runAction(currentAnimate);
 			}
 			else
@@ -135,7 +142,9 @@ void Monster::updateMove( float delta)
 				//log("geiyedong");
 				auto moveBy = MoveBy::create(m_speed, Vec2(0, 10));
 				// runAction(moveBy);
-				m_monster->runAction(Spawn::create(moveBy,up_animate,NULL));
+				//m_monster->runAction(up_animate);
+				this->runAction(moveBy);
+				//m_monster->runAction(Spawn::create(moveBy,up_animate,NULL));
 				//runAction(currentAnimate);
 			}
 			else
@@ -152,7 +161,9 @@ void Monster::updateMove( float delta)
 				//log("geiyedong");
 				auto moveBy = MoveBy::create(m_speed, Vec2(0, -10));
 				//runAction(moveBy);
-				m_monster->runAction(Spawn::create(moveBy,down_animate,NULL));
+				//m_monster->runAction(up_animate);
+				this->runAction(moveBy);
+				//m_monster->runAction(Spawn::create(moveBy,down_animate,NULL));
 				//runAction(currentAnimate);
 			}
 			else
@@ -162,21 +173,22 @@ void Monster::updateMove( float delta)
 		}
 		default:break;
 	}
-	//stopAction(currentAnimate);
-	//m_monster->runAction(right_animate);
+	
+	m_monster->runAction(currentAnimate);
 	
 }
+
 void Monster::update_attack(float delata)
 {
 	//Player* player=nullptr;
 	Point playerPos;
 	////Scene* nowScene = nullptr;
 	////////先得到父节点，再从父节点得player和出自己之外的monster的坐标
-	//auto runningScene = cocos2d::Director::getInstance()->getRunningScene()->getChildByTag(BATTLE_SCENE);
-	//Node* playerOfNode = nullptr;
-	//playerOfNode = getChildByTag(PLAYER_TAG);
-	//playerOfNode=cocos2d::Director::getInstance()->getRunningScene()->getChildByTag(BATTLE_SCENE)->getChildByTag(MAP_TAG)->getChildByTag(PLAYER_TAG);
-	//int num = runningScene->getChildrenCount();
+	/*auto runningScene = cocos2d::Director::getInstance()->getRunningScene()->getChildByTag(BATTLE_SCENE);
+	Node* playerOfNode = nullptr;
+	playerOfNode = getChildByTag(PLAYER_TAG);
+	playerOfNode=cocos2d::Director::getInstance()->getRunningScene()->getChildByTag(BATTLE_SCENE)->getChildByTag(MAP_TAG)->getChildByTag(PLAYER_TAG);
+	//int num = runningScene->getChildrenCount();*/
 	//log("sssssssssssssssss  %d", num);
 	////if (playerOfNode != nullptr)
 	//{
@@ -197,11 +209,14 @@ void Monster::update_attack(float delata)
 	
 	//log("playerPos::%d,%d", playerPos.x, playerPos.y);
 	Point nowPos = this->getPosition();
-	playerPos = getRedomPos(redomNum);
-	if (playerPos.x >= nowPos.x - 200 && playerPos.x <= nowPos.x + 200 && playerPos.y >= nowPos.y - 200 && playerPos.y <= nowPos.y + 200)
-	{
-		is_attack = true;
-		
+	srand((unsigned int)setSrand(redomNum) + (unsigned)time(NULL));
+	int i = rand() % 9;
+	/*if (i % 3 != 0)
+		return;*/
+	//else
+	//{
+		playerPos = getRedomPos(redomNum);
+
 		double nowlength = sqrt(pow(playerPos.x - offsetX, 2) + pow(playerPos.y - offsetY, 2));
 		double rate = 200 / nowlength;
 		const Vec2 route = Vec2((playerPos.x - offsetX) * rate, (playerPos.y - offsetY) * rate);
@@ -223,10 +238,8 @@ void Monster::update_attack(float delata)
 		auto callfunc = CallFunc::create(arrived);
 		bullet->setPosition(
 			m_monster->getPosition());
-		
+
 		bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
-		
-	}
-	else 
-		is_attack = false;
+
+	//}
 }

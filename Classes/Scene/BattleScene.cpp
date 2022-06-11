@@ -2,6 +2,7 @@
 #include "Actor\Player.h"
 #include "Hero\Hero.h"
 #include "Actor\Role.h"
+#include"Const/const.h"
 #include"PauseBox.h"
 #define MAXMONSTER 10
 
@@ -63,9 +64,8 @@ void BattleScene::initUI()
 		this->addChild(pausebox);
 		});
 }
-Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
+Scene* BattleScene::createScene()
 {
-	_heroPath = heroPath;
 	auto scene = Scene::createWithPhysics();
 
 	if (scene != nullptr)
@@ -76,10 +76,9 @@ Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
 		scene->retain();
 		
 		this->setcircle();
-		this->bindPlayer(Player::create(_heroPath[1]));
-	
-		my_player->move();
+		
 		BattleScene::initPosition();
+		addPlayer();
 		this->schedule(CC_SCHEDULE_SELECTOR(BattleScene::initMonster));
 		auto contactListener = EventListenerPhysicsContact::create();
 		contactListener->onContactBegin = CC_CALLBACK_1(BattleScene::onContactBegin, this);
@@ -89,27 +88,27 @@ Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
 	return nullptr;
 }
  
-void BattleScene::bindPlayer(Player* _player)
+void BattleScene::bindPlayermap(Player* _player)
 {
-	if (_player != nullptr && my_player == nullptr)
+	if (_player != nullptr )
 	{
 		_player->bind_map(battlemap, meta_barrier, meta_grass);
-		//_bullet->bind_map(battlemap, meta_barrier, meta_grass);
-		this->my_player = _player;
+
+		my_player = _player;
 		
-		battlemap->addChild(my_player,3,PLAYER_TAG);
+		//battlemap->addChild(my_player,3);
+		
 	}
 }
 
-Monster* BattleScene::bindMonster(Monster* _monster,int num)
+Monster* BattleScene::bindMonstermap(Monster* _monster,int num)
 {
-
-	if (_monster != nullptr && my_monster[num] == nullptr)
+	if (_monster != nullptr )
 	{
 		_monster->bind_map(battlemap, meta_barrier, meta_grass);
 
-		this->my_monster[num] =_monster;
-		battlemap->addChild(my_monster[num]);
+		this->my_monster =_monster ;
+		//battlemap->addChild(my_monster);
 		
 	}
 	return _monster;
@@ -170,7 +169,7 @@ void BattleScene::initPosition()
 	initPos[10] = Point(917, 1374);
 	//产生那十个位置的随机值
 	srand((unsigned)time(NULL));
-	for (int i = 0; i < maxMonsterNum; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		redomPos[i] = rand() % 10+1;
 		for(int j=0;j<i;++j)
@@ -185,35 +184,42 @@ void BattleScene::initPosition()
 	}
 	return;
 }
+void BattleScene::addPlayer()
+{
+	std::string playerBeginFile = "hero/hero1_begin.png";
+	my_player = Player::create(playerBeginFile, initPos[redomPos[0]]);
+	bool isPlayerLive = true;
+	bindPlayermap(my_player);
+
+	//my_player->setTag(PLAYER_TAG);
+	battlemap->addChild(my_player, 3);
+	//log("nnnnnnnnnnnnnnnnn%d", my_player->getParent()->getTag());
+	my_player->move();
+	if (isCurrentPlayerDie == true)
+		my_player->removeFromParent();
+	//my_player->move();
+
+
+}
 void BattleScene::initMonster(float dealt)
 {
 	//因为要生成最多10个monster，所以直接设置为更新函数，而不是用for循环
 	if (currentMonsterNum < maxMonsterNum)
 	{
 		
-		for (int i = 2; i <= 10; i++)
-		{
-			my_monster[i-2] = this->bindMonster(Monster::create(_heroPath[i], maxMonsterNum,
-				initPos[redomPos[currentMonsterNum]], currentMonsterNum), currentMonsterNum);
-		}
 		//log("has been going");
-		/*Monster* _monster = nullptr;
-		_monster=this->bindMonster(Monster::create("hero/hero1_begin.png", maxMonsterNum,
-			initPos[redomPos[currentMonsterNum]], currentMonsterNum),currentMonsterNum);*/
+		my_monster = nullptr;
+		my_monster=bindMonstermap(Monster::create("hero/hero1_begin.png", maxMonsterNum,
+			initPos[redomPos[currentMonsterNum+1]], currentMonsterNum),currentMonsterNum);
 		log("zhsooihawoefklsdfl");
 		//此处应该是做一个switch的英雄选择函数
-		bool flag = true;;
-		for (int i = 0; i < 10; i++)
+		if (my_monster != nullptr)
 		{
-			if (my_monster[i] == nullptr)
-				flag = false;
-		}
-
-    	if (flag)
-		{
-			for(int i=0;i<10;i++)
-				my_monster[i]->move();
-			//log("Point::%f,%f",_monster->getPosition().x, _monster->getPosition().y);
+			battlemap->addChild(my_monster,3);
+		    my_monster->move();
+			/*if (isCurrentMonsterDie == true)
+				my_monster->removeFromParent();*/
+			
 		}
 		/*else
 			return;*/
@@ -223,7 +229,7 @@ void BattleScene::initMonster(float dealt)
 bool BattleScene::onContactBegin(PhysicsContact& contact)
 {
 	int node = getTag();
-	log(",,,,,,,,,,,,%d,%d", MONSTER_TAG,PLAYER_TAG);
+	//log(",,,,,,,,,,,,%d,%d", MONSTER_TAG,PLAYER_TAG);
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
 	if (nodeA && nodeB)
@@ -236,15 +242,15 @@ bool BattleScene::onContactBegin(PhysicsContact& contact)
 			nodeB->removeFromParentAndCleanup(true);
 			nodeA->removeFromParentAndCleanup(true);
 		}
-		if ((tagA == MONSTER_TAG || tagB == MONSTER_TAG) )
+		if ((tagA == MONSTER_BULLET_TAG && tagB == PLAYER_TAG) || ((tagB == MONSTER_BULLET_TAG && tagA == PLAYER_TAG)))
 		{
-			
-			monsterAttacked(nodeA, nodeB);
-		}
-		if (tagA == PLAYER_TAG || tagB == PLAYER_TAG)
-		{
-			
+		//	log("oahsdfaiouwhfi");
 			playerAttacked(nodeA, nodeB);
+		}
+		if ((tagA == PLAYER_BULLET_TAG && tagB == MONSTER_TAG)||((tagB == PLAYER_BULLET_TAG && tagA == MONSTER_TAG)))
+		{
+			//log("fashenglepenghzunag");
+			monsterAttacked(nodeA, nodeB);
 		}
 			
 
@@ -259,33 +265,40 @@ bool BattleScene::onContactBegin(PhysicsContact& contact)
 	}
 	return true;
 }
-void BattleScene::monsterAttacked(Node* a, Node* b)
-{
-	
-	isCurrentMonsterLive = false;
-	--maxMonsterNum;
-	a->removeFromParentAndCleanup(true);
-	b->removeFromParentAndCleanup(true);
-	log("ooooooooooooooooooo");
-	if (maxMonsterNum == 0)
-	{
-
-		//Direction::结束画面。
-	}
-	isCurrentMonsterLive = true;
-}
 void BattleScene::playerAttacked(Node* a, Node* b)
 {
+	isCurrentPlayerDie = my_player->isDie();
+	if (!isCurrentMonsterDie)
+	{
+		a->removeFromParentAndCleanup(true);
+		b->removeFromParentAndCleanup(true);
+		log("ooooooooooooooooooo");
+		//Direction::结束画面。
+	}
+	else
+	{
+
+		my_player->getAttack(my_monster->getAtk());
+	}
 	
-	isCurrentPlayerLive = false;
-	
-		if (!isCurrentMonsterLive)
-		{
-			a->removeFromParentAndCleanup(true);
-			b->removeFromParentAndCleanup(true);
-			log("ooooooooooooooooooo");
-			//Direction::结束画面。
-		}
+}
+void BattleScene::monsterAttacked(Node* a, Node* b)
+{
+	isCurrentMonsterDie = my_monster->isDie();
+	if (isCurrentMonsterDie)
+	{
+		a->removeFromParentAndCleanup(true);
+		b->removeFromParentAndCleanup(true);
+		log("ooooooooooooooooooo,,,,iiiiiiiiiiiiiii%d",my_monster->getHp());
+		--currentMonsterNum;
 		
-	isCurrentMonsterLive = true;
+	}
+	else
+	{
+		my_monster->getAttack(my_player->getAtk());
+		
+	}
+	if (currentMonsterNum == 0)
+		log("now it's time to over the game");
+		//Direction::结束画面。
 }
