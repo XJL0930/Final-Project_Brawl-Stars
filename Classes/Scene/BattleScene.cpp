@@ -4,6 +4,7 @@
 #include "Actor\Role.h"
 #include"Const/const.h"
 #include"PauseBox.h"
+#include"Component/GameTimer.h"
 #define MAXMONSTER 10
 
 BattleScene* BattleScene::create(int testIndex /* = 1 */)
@@ -76,10 +77,11 @@ Scene* BattleScene::createScene()
 		scene->retain();
 		
 		this->setcircle();
-		
+		auto timer = GameTimer::createTimer(180);
+		this->addChild(timer);
 		BattleScene::initPosition();
 		addPlayer();
-		this->schedule(CC_SCHEDULE_SELECTOR(BattleScene::initMonster));
+		this->initMonster();
 		auto contactListener = EventListenerPhysicsContact::create();
 		contactListener->onContactBegin = CC_CALLBACK_1(BattleScene::onContactBegin, this);
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -107,7 +109,7 @@ Monster* BattleScene::bindMonstermap(Monster* _monster,int num)
 	{
 		_monster->bind_map(battlemap, meta_barrier, meta_grass);
 
-		this->my_monster =_monster ;
+		//this->my_monster.push_back(_monster) ;
 		//battlemap->addChild(my_monster);
 		
 	}
@@ -201,22 +203,23 @@ void BattleScene::addPlayer()
 
 
 }
-void BattleScene::initMonster(float dealt)
+void BattleScene::initMonster()
 {
 	//因为要生成最多10个monster，所以直接设置为更新函数，而不是用for循环
-	if (currentMonsterNum < maxMonsterNum)
+	for(int i=0;i<9;i++)
 	{
 		
 		//log("has been going");
-		my_monster = nullptr;
-		my_monster=bindMonstermap(Monster::create("hero/hero1_begin.png", maxMonsterNum,
+		my_monster[i] = nullptr;
+		my_monster[i] = bindMonstermap(Monster::create("hero/hero1_begin.png", maxMonsterNum,
 			initPos[redomPos[currentMonsterNum+1]], currentMonsterNum),currentMonsterNum);
 		log("zhsooihawoefklsdfl");
 		//此处应该是做一个switch的英雄选择函数
-		if (my_monster != nullptr)
+		if (my_monster[i] != nullptr)
 		{
-			battlemap->addChild(my_monster,3);
-		    my_monster->move();
+			battlemap->addChild(my_monster[i], 3);
+			my_monster[i]->setTag(monster_tag[i]);
+		    my_monster[i]->move();
 			/*if (isCurrentMonsterDie == true)
 				my_monster->removeFromParent();*/
 			
@@ -242,17 +245,26 @@ bool BattleScene::onContactBegin(PhysicsContact& contact)
 			nodeB->removeFromParentAndCleanup(true);
 			nodeA->removeFromParentAndCleanup(true);
 		}
-		if ((tagA == MONSTER_BULLET_TAG && tagB == PLAYER_TAG) || ((tagB == MONSTER_BULLET_TAG && tagA == PLAYER_TAG)))
+		if (tagA == MONSTER_BULLET_TAG && tagB == PLAYER_TAG)
 		{
 		//	log("oahsdfaiouwhfi");
 			playerAttacked(nodeA, nodeB);
 		}
-		if ((tagA == PLAYER_BULLET_TAG && tagB == MONSTER_TAG)||((tagB == PLAYER_BULLET_TAG && tagA == MONSTER_TAG)))
+		if (tagB == MONSTER_BULLET_TAG && tagA == PLAYER_TAG)
+		{
+			//	log("oahsdfaiouwhfi");
+			playerAttacked(nodeA, nodeB);
+		}
+		if ((tagA == PLAYER_BULLET_TAG && if_monster_tag(tagB)))
 		{
 			//log("fashenglepenghzunag");
 			monsterAttacked(nodeA, nodeB);
 		}
-			
+		if ((tagB == PLAYER_BULLET_TAG && if_monster_tag(tagA)))
+		{
+			//log("fashenglepenghzunag");
+			monsterAttacked(nodeB, nodeA);
+		}
 
 		// 当player的飞镖碰到敌人或者敌人的飞镖，将它们杀死
 	   /* if ((nodeA->getTag() == PLAYER_TAG || nodeA->getTag() == MONSTER_TAG)
@@ -267,6 +279,7 @@ bool BattleScene::onContactBegin(PhysicsContact& contact)
 }
 void BattleScene::playerAttacked(Node* a, Node* b)
 {
+	int tag = b->getParent()->getTag();
 	isCurrentPlayerDie = my_player->isDie();
 	if (!isCurrentMonsterDie)
 	{
@@ -278,27 +291,47 @@ void BattleScene::playerAttacked(Node* a, Node* b)
 	else
 	{
 
-		my_player->getAttack(my_monster->getAtk());
+		my_player->getAttack(what_monster_is(tag)->getAtk());
 	}
 	
 }
 void BattleScene::monsterAttacked(Node* a, Node* b)
 {
-	isCurrentMonsterDie = my_monster->isDie();
+	int tag = b->getTag();
+	Monster* monster= what_monster_is(tag);
+	isCurrentMonsterDie = monster->isDie();
 	if (isCurrentMonsterDie)
 	{
 		a->removeFromParentAndCleanup(true);
 		b->removeFromParentAndCleanup(true);
-		log("ooooooooooooooooooo,,,,iiiiiiiiiiiiiii%d",my_monster->getHp());
+		log("ooooooooooooooooooo,,,,iiiiiiiiiiiiiii%d",monster->getHp());
 		--currentMonsterNum;
 		
 	}
 	else
 	{
-		my_monster->getAttack(my_player->getAtk());
+		monster->getAttack(my_player->getAtk());
 		
 	}
 	if (currentMonsterNum == 0)
 		log("now it's time to over the game");
 		//Direction::结束画面。
+}
+
+Monster* BattleScene::what_monster_is(int tag)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		if (tag == monster_tag[i])
+			return my_monster[i];
+	}
+	return nullptr;
+}
+
+bool BattleScene::if_monster_tag(int tag)
+{
+	for (int i = 0; i < 9; i++)
+		if (monster_tag[i] == tag)
+			return true;
+	return false;
 }

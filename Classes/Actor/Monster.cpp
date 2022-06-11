@@ -28,6 +28,7 @@ Monster* Monster::create(const std::string& name, int maxMonster, Point startPos
 		Hero hero_;
 		Shirley shirley;
 		monster->bind_hero(shirley);
+		monster->setBlood();
 		monster->autorelease();
 	
 		return monster;

@@ -5,6 +5,7 @@ void Role::bind_hero(Hero &hero) {
 	m_speed = hero.get_speed();
 	m_attackDistance = hero.get_attackDistance();
 	m_hp = hero.get_hp();
+	m_hp_max = hero.get_hp();
 	m_atk = hero.get_atk();
 	m_defence = hero.get_defence();
 	m_atkHateValue = hero.get_atkHateValue();
@@ -204,4 +205,35 @@ Point Role::getRedomPos(int num)
 	} while (nextPosition > mapSize && !collisionTest());
 	//log("newPosotion:%f,%f", nextPosition.x, nextPosition.y);
 	return nextPosition;
+}
+
+void Role::setBlood() {
+	auto sprite = Sprite::create("bar.png");   //创建进度框
+	sprite->setScaleX(0.1);
+	sprite->setScaleY(0.1);
+	auto size = this->getContentSize();
+	sprite->setPosition(Point(size.width / 2, size.height - 20)); //设置框的位置
+	this->addChild(sprite);            //加到默认图层里面去
+	auto sprBlood = Sprite::create("blood.png");  //创建血条
+	sprBlood->setScaleX(0.1);
+	sprBlood->setScaleY(0.1);
+	ProgressTimer* progress = ProgressTimer::create(sprBlood); //创建progress对象
+	progress->setType(ProgressTimer::Type::BAR);        //类型：条状
+	progress->setPosition(Point(size.width / 2, size.height - 20));
+	progress->setScale(0.1);
+	//从右到左减少血量
+	progress->setMidpoint(Point(0, 0.5));     //如果是从左到右的话，改成(1,0.5)即可
+	progress->setBarChangeRate(Point(1, 0));
+	progress->setTag(BLOOD_BAR);       //做一个标记
+	this->addChild(progress);
+	schedule(CC_SCHEDULE_SELECTOR(Role::scheduleBlood), 0.1f);  //刷新函数，每隔0.1秒
+}
+
+void Role::scheduleBlood(float delta) {
+	auto progress = (ProgressTimer*)this->getChildByTag(BLOOD_BAR);
+	progress->setPercentage((((float)m_hp) / m_hp_max) * 100);  //这里是百分制显示
+	log("%d %d", m_hp, m_hp_max);
+	if (progress->getPercentage() < 0) {
+		this->unschedule(CC_SCHEDULE_SELECTOR(Role::scheduleBlood));
+	}
 }

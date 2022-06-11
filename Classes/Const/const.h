@@ -14,6 +14,7 @@
 #define MAP_TAG 3
 #define MONSTER_BULLET_TAG 5
 #define PLAYER_BULLET_TAG 6
+#define BLOOD_BAR 10
 //mask
 #define MONSTER_CONTACT_MASK 0001	//4				
 #define MONSTER_CATEGORY_MASK 0100		//3		

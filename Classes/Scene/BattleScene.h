@@ -6,6 +6,7 @@
 #include"Actor/Player.h"
 #include"Actor/Monster.h"
 #include "ui/CocosGUI.h"
+#include "Const/const.h"
 using namespace cocos2d;
 
 class BattleScene : public Scene {
@@ -28,19 +29,23 @@ public:
 	//≥ı ºªØmonster
 	void addPlayer();
 	bool onContactBegin(PhysicsContact& contact);
-	void initMonster(float dealt);
+	void initMonster();
 	void monsterAttacked(Node* a,Node* b);
 	void playerAttacked(Node* a, Node* b);
 	bool isCurrentMonsterDie = false;
 	bool isCurrentPlayerDie = false;
-	
+	Monster* what_monster_is(int);
+	bool if_monster_tag(int tag);
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
 private:
 	Player* my_player = nullptr;
-	Monster* my_monster = nullptr;
+	Monster* my_monster[9];
+	std::vector<int> monster_tag = { MY_MONSTER_1, MY_MONSTER_2, MY_MONSTER_3,
+	MY_MONSTER_4, MY_MONSTER_5, MY_MONSTER_6,
+	MY_MONSTER_7, MY_MONSTER_8, MY_MONSTER_9 };
 	ui::Button* _pauseButton;
 	
 	/*Monster* my_monster2 = nullptr;

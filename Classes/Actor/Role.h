@@ -57,6 +57,8 @@ public:
 	void setAtk(int newAtk);
 	void getAttack(int attack);
 	bool isDie();
+	void scheduleBlood(float delta);
+	void setBlood();
 	//ID，可以增加函数来使英雄用id调用
 	//virtual inline int getId() { return m_id; }
 	
@@ -117,6 +119,8 @@ protected:
 	int m_attackDistance;	//攻击距离
 
 	int m_hp;//生命值
+
+	int m_hp_max;//生命值上限
 
 	int m_atk;//攻击力
 

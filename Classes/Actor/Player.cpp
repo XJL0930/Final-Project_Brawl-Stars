@@ -29,6 +29,7 @@ Player* Player::create(const std::string& name, const Point pos)
 		Shirley shirley;
 		player->bind_hero(shirley);
 		player->autorelease();
+		player->setBlood();
 		return player;
 	}
 	
@@ -460,3 +461,5 @@ void Player::update_setViewPointByPlayer(float dt) {
 	//m_facingPoint =(m_facingPoint) - 2 * viewPos;
 	//log("map moved");
 }
+
+
