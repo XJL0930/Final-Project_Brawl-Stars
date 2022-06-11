@@ -66,6 +66,7 @@ void Monster::move()
 	if (m_monster != nullptr)
 	{
 		this->schedule(CC_SCHEDULE_SELECTOR(Monster::updateMove), m_speed);
+		this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_circle), 1.0f);
 		//this->schedule(CC_SCHEDULE_SELECTOR(Monster::update_animate));
 		//runAction(currentAnimate);
 		if (redomNum % 3 == 0)

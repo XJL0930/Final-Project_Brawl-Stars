@@ -36,6 +36,9 @@ public:
 	bool isCurrentPlayerDie = false;
 	Monster* what_monster_is(int);
 	bool if_monster_tag(int tag);
+	void update_if_die(float);
+	bool dead(int tag);
+	void update_number(float);
 protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
@@ -46,6 +49,7 @@ private:
 	std::vector<int> monster_tag = { MY_MONSTER_1, MY_MONSTER_2, MY_MONSTER_3,
 	MY_MONSTER_4, MY_MONSTER_5, MY_MONSTER_6,
 	MY_MONSTER_7, MY_MONSTER_8, MY_MONSTER_9 };
+	std::vector<int> die;
 	ui::Button* _pauseButton;
 	
 	/*Monster* my_monster2 = nullptr;
@@ -59,6 +63,7 @@ private:
 	int maxMonsterNum = 9;
 	int currentMonsterNum = 0;
 	int redomPos[10] = { 0 };
+	Label* label;
 };
 
 

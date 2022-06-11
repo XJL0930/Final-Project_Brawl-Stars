@@ -46,7 +46,7 @@ void Role::getAttack(int attack)
 }
 bool Role::isDie()
 {
-	if (m_hp == 0)
+	if (m_hp <= 0)
 		return true;
 	else
 		return false;
@@ -236,4 +236,19 @@ void Role::scheduleBlood(float delta) {
 	if (progress->getPercentage() < 0) {
 		this->unschedule(CC_SCHEDULE_SELECTOR(Role::scheduleBlood));
 	}
+}
+
+
+
+bool Role::if_out_circle() {
+	if (offsetX<4 * (180 - gametime) || offsetX>(1600 - 5 * (180 - gametime)) || offsetY<4 * (180 - gametime) || offsetY>(1600 - 5 * (180 - gametime)))
+		return true;
+	return false;
+}
+
+void Role::update_circle(float dt){
+	gametime--;
+	log("%d", gametime);
+	if (if_out_circle())
+		m_hp -= 5*(180-gametime);
 }

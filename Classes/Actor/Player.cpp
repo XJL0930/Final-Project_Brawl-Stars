@@ -67,6 +67,7 @@ void Player::move()
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_move),m_speed);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_mouse));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_animate));
+	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_circle),1.0f);
 	//this->schedule(CC_SCHEDULE_SELECTOR(Player::update_route));
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_weapon),0.2f);
 	this->schedule(CC_SCHEDULE_SELECTOR(Player::update_setViewPointByPlayer));

@@ -1,19 +1,19 @@
 #pragma once
-#define BATTLE_SCENE 1
-#define PLAYER_TAG 2
-#define MONSTER_TAG 0
-#define MY_MONSTER_1 110
-#define MY_MONSTER_2 120
-#define MY_MONSTER_3 130
-#define MY_MONSTER_4 140
-#define MY_MONSTER_5 150
-#define MY_MONSTER_6 160
-#define MY_MONSTER_7 170
-#define MY_MONSTER_8 180
-#define MY_MONSTER_9 190
-#define MAP_TAG 3
-#define MONSTER_BULLET_TAG 5
-#define PLAYER_BULLET_TAG 6
+#define BATTLE_SCENE 11
+#define PLAYER_TAG 20
+#define MONSTER_TAG 100
+#define MY_MONSTER_1 0
+#define MY_MONSTER_2 1
+#define MY_MONSTER_3 2
+#define MY_MONSTER_4 3
+#define MY_MONSTER_5 4
+#define MY_MONSTER_6 5
+#define MY_MONSTER_7 6
+#define MY_MONSTER_8 7
+#define MY_MONSTER_9 8
+#define MAP_TAG 13
+#define MONSTER_BULLET_TAG 50
+#define PLAYER_BULLET_TAG 60
 #define BLOOD_BAR 10
 //mask
 #define MONSTER_CONTACT_MASK 0001	//4				

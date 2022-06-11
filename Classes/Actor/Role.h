@@ -81,6 +81,7 @@ public:
 	//使monster得到一个随机的坐标。
 	//Point getRedomPos();
 	void update_animate(float delta);
+	void update_circle(float dt);
 	void setXY(int x, int y);
 	Point tileCoordForPosition(Point pos);
 	Animate* currentAnimate = stand_left;
@@ -96,7 +97,9 @@ public:
 	int redomNum;
 	bool is_facingStatueChanged = false;
 	bool is_standStatueChanged = true;
+	bool if_out_circle();
 protected:
+	int gametime=180;
 	float originx;//初始的位置
 	float originy;
 	float offsetX = 0;//当前的位置

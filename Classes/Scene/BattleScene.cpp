@@ -77,14 +77,25 @@ Scene* BattleScene::createScene()
 		scene->retain();
 		
 		this->setcircle();
+
 		auto timer = GameTimer::createTimer(180);
 		this->addChild(timer);
+
 		BattleScene::initPosition();
 		addPlayer();
 		this->initMonster();
 		auto contactListener = EventListenerPhysicsContact::create();
 		contactListener->onContactBegin = CC_CALLBACK_1(BattleScene::onContactBegin, this);
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+		this->schedule(CC_SCHEDULE_SELECTOR(BattleScene::update_if_die), 1.0f);
+		
+		label = Label::createWithSystemFont(" ", "fonts/arial.ttf", 70.0f);
+		label->setPosition(800, 600);
+        this->addChild(label);
+		label->setScale(0.5);
+        schedule(CC_SCHEDULE_SELECTOR(BattleScene::update_number),1.0f);
+		
 		return scene;
 	}
 	return nullptr;
@@ -302,6 +313,7 @@ void BattleScene::monsterAttacked(Node* a, Node* b)
 	isCurrentMonsterDie = monster->isDie();
 	if (isCurrentMonsterDie)
 	{
+		die.push_back(tag);
 		a->removeFromParentAndCleanup(true);
 		b->removeFromParentAndCleanup(true);
 		log("ooooooooooooooooooo,,,,iiiiiiiiiiiiiii%d",monster->getHp());
@@ -334,4 +346,31 @@ bool BattleScene::if_monster_tag(int tag)
 		if (monster_tag[i] == tag)
 			return true;
 	return false;
+}
+
+void BattleScene::update_if_die(float dt) {
+	for (int i = 0; i < 9; ++i)
+		if (!dead(i))
+			if (my_monster[i]->isDie())
+			{
+				my_monster[i]->removeFromParentAndCleanup(true);
+				die.push_back(i);
+				--currentMonsterNum;
+			}
+	if (my_player->isDie())
+		my_player->removeAllChildrenWithCleanup(true);
+}
+
+bool BattleScene::dead(int tag) {
+	for (int i = 0; i < die.size(); ++i)
+		if (die[i] == tag)
+			return true;
+	return false;
+}
+
+void BattleScene::update_number(float dt)
+{
+	char* m = new char[50];
+	sprintf(m, "Survival Player Number: %d",currentMonsterNum+1);
+	label->setString(m);
 }
