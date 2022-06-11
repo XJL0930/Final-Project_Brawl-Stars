@@ -51,6 +51,12 @@ public:
 	bool current_is_stand = true;
 	bool last_is_stand = true;
 
+	int getHp();
+	void setHp(int newHp);
+	int getAtk();
+	void setAtk(int newAtk);
+	void getAttack(int attack);
+	bool isDie();
 	//ID，可以增加函数来使英雄用id调用
 	//virtual inline int getId() { return m_id; }
 	
@@ -72,10 +78,10 @@ public:
 	bool grassTest();//监测是否走到草里了
 	//使monster得到一个随机的坐标。
 	//Point getRedomPos();
-
+	void update_animate(float delta);
 	void setXY(int x, int y);
 	Point tileCoordForPosition(Point pos);
-
+	Animate* currentAnimate = stand_left;
 	void bind_map(TMXTiledMap* battlemap,
 		TMXLayer* meta_barrier,
 		TMXLayer* meta_grass);

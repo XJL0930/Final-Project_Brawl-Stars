@@ -25,14 +25,14 @@ public:
 	void onMouseMove(Event* event);
 	bool onMouseDown(Event* event);
 	//static Player* create(const std::string& name);
-	static Player* create(const std::string& name, float offsetX=StartX, float offsetY=StartY);//重载用于构造初始位置
+	static Player* create(const std::string& name, const Point pos);//重载用于构造初始位置
 	
 	//Point getPlayerPosition() { return Vec2(offsetX, offsetY); }
 	//virtual void stand();
 	virtual void move();//用于移动的函数
 	bool bindPhysicsBody();
 	bool bindMonsterBulletPhysicsBody(Sprite* bullet);
-	//void bindBullet(Player* _bullet);
+	
 	//virtual void attack();
 
 
@@ -57,7 +57,6 @@ public:
 private:
 	float m_state_lastTime;
 	Animate* currentAnimate = stand_left;
-	Player* my_bullet = nullptr;
 	//double maxLength=300;
 
 };

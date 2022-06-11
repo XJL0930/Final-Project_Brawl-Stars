@@ -23,6 +23,33 @@ void Role::bind_hero(Hero &hero) {
 	return;
 
 }
+int Role::getHp()
+{
+	return m_hp;
+}
+void Role::setHp(int newHp)
+{
+	m_hp = newHp;
+}
+int Role::getAtk()
+{
+	return m_atk;
+}
+void Role::setAtk(int newAtk)
+{
+	m_atk = newAtk;
+}
+void Role::getAttack(int attack)
+{
+	m_hp -= attack;
+}
+bool Role::isDie()
+{
+	if (m_hp == 0)
+		return true;
+	else
+		return false;
+}
 void Role::initHeroPicture(Sprite* _player)
 {
 	m_hero = _player;

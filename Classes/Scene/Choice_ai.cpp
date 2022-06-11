@@ -80,17 +80,6 @@ bool ChoiceAI::init()
     //touchlisten(select4);
     this->addChild(hero4);
 
-    auto humanPlayer = Label::createWithTTF("HumanPlayer", "fonts/arial.ttf", 34);
-    humanPlayer->setColor(Color3B::RED);
-    humanPlayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-
-    std::vector<Label*> AIvec;
-    for (int i = 1; i<= 9; i++) {
-        auto AI = Label::createWithTTF("AI", "fonts/arial.ttf", 34);
-        AI->setColor(Color3B::RED);
-        AI->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-        AIvec.push_back(AI);
-    }
 
     enter->setColor(Color3B::BLACK);
     float x = origin.x + visibleSize.width - enter->getContentSize().width / 2;
@@ -107,34 +96,17 @@ bool ChoiceAI::init()
     nowButton = playervec[0];
     for (auto it = playervec.begin(); it != playervec.end(); it++)
     {
-        static auto aiit = AIvec.begin();
         static int i = 2;
         if (i < 7)
         {
-
             (*it)->setPosition((i - 0.5) * visibleSize.width / 7, 5 * visibleSize.height / 7 + 30);
-            if (i == 2)
-            {
-                humanPlayer->setPosition(Vec2((*it)->getPosition().x, (*it)->getPosition().y + 50));
-                this->addChild(humanPlayer,10);
-            }
-            else
-            {
-                (*aiit)->setPosition(Vec2((*it)->getPosition().x, (*it)->getPosition().y + 50));
-                this->addChild((*aiit),10);
-            }
             this->addChild((*it));
         }
         if (i >= 7)
         {
             (*it)->setPosition((i - 5 - 0.5) * visibleSize.width / 7, 4 * visibleSize.height / 7);
-            (*aiit)->setPosition((*it)->getPosition().x, (*it)->getPosition().y + 50);
-            this->addChild((*aiit),10);
             this->addChild((*it));
         }
-    
-        if (i != 2)
-            aiit++;
         i++;
     }
 
@@ -260,7 +232,7 @@ void ChoiceAI::menuEnterCallback()
 {
     //Close the cocos2d-x game scene and quit the application
     auto battleScene = BattleScene::create();
-    Director::getInstance()->replaceScene(battleScene->createScene(heroPath));
+    Director::getInstance()->replaceScene(battleScene->createScene());
 
     /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
 
