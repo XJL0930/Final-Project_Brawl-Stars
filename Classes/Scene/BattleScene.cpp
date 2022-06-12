@@ -91,7 +91,8 @@ Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 		this->schedule(CC_SCHEDULE_SELECTOR(BattleScene::update_if_die), 1.0f);
-		
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playBackgroundMusic("Scene/battlemusic.mp3", true);
 		label = Label::createWithSystemFont(" ", "fonts/arial.ttf", 70.0f);
 		label->setPosition(800, 600);
         this->addChild(label);
@@ -300,6 +301,7 @@ void BattleScene::playerAttacked(Node* a, Node* b)
 		a->removeFromParentAndCleanup(true);
 		b->removeFromParentAndCleanup(true);
 		log("ooooooooooooooooooo");
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		auto endScene = EndScene::create(currentMonsterNum);
 		Director::getInstance()->replaceScene(endScene);
 	}
@@ -331,6 +333,7 @@ void BattleScene::monsterAttacked(Node* a, Node* b)
 	}
 	if (currentMonsterNum == 0)
 	{
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		auto endScene = EndScene::create(currentMonsterNum);
 		Director::getInstance()->replaceScene(endScene);
 	}
@@ -365,6 +368,7 @@ void BattleScene::update_if_die(float dt) {
 			}
 	if (my_player->isDie()|| currentMonsterNum == 0)
 	{
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		auto endScene = EndScene::create(currentMonsterNum);
 		Director::getInstance()->replaceScene(endScene);
 	}

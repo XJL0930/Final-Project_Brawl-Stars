@@ -48,7 +48,7 @@ bool EndScene::init()
 
 
     auto audio = SimpleAudioEngine::getInstance();
-    audio->playBackgroundMusic("endmusic.mp3", true);
+    audio->playBackgroundMusic("Scene/end/cheermusic.mp3", true);
 
     auto closeItem = MenuItemImage::create(
         "Scene/end/game_0_end.png",
@@ -81,9 +81,9 @@ bool EndScene::init()
         else
         {
             if (i % 2 == 0)
-                reward->setPosition(500 - i * 50, 400);
+                reward->setPosition(500 -(float) i * 50, 400);
             else
-                reward->setPosition(500 + i * 50, 400);
+                reward->setPosition(500 + (float)i * 50, 400);
         }
         this->addChild(reward);
     }

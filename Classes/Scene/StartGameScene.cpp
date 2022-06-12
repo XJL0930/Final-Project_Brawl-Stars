@@ -50,7 +50,7 @@ bool StartGame::init()
 	}
 	else
 	{
-		startmenu->setScale(0.6);
+		startmenu->setScale(0.6f);
 		startmenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		float x = origin.x + visibleSize.width / 2 - startmenu->getContentSize().width / 2;
 		float y = origin.y + startmenu->getContentSize().height / 2 + 40;
@@ -72,7 +72,7 @@ bool StartGame::init()
 	}
 	else
 	{
-		closetmenu->setScale(0.6);
+		closetmenu->setScale(0.6f);
 		closetmenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		float x = origin.x + visibleSize.width / 2 + startmenu->getContentSize().width / 2;;
 		float y = origin.y + startmenu->getContentSize().height / 2 + 40;
