@@ -19,7 +19,7 @@ public:
 	//用来创建BattleScene类
 	static BattleScene* create(int testIndx = 1);
 	//用来将物理碰撞引入Scene
-	Scene* createScene();
+	Scene* createScene(std::map<int, std::string> heroPath);
 	void bindPlayermap(Player* _player);
 	Monster* bindMonstermap(Monster* _monster,int num);
 	void setcircle();//用于设置毒圈
@@ -43,6 +43,7 @@ protected:
 	TMXTiledMap* battlemap;
 	TMXLayer* meta_barrier;
 	TMXLayer* meta_grass;
+	std::map<int, std::string> _heroPath;
 private:
 	Player* my_player = nullptr;
 	Monster* my_monster[9];

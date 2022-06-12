@@ -38,7 +38,7 @@ bool ChoiceAI::init()
 
     auto select1 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
     select1->setTag(1);
-    select1->setPosition(1.5 * visibleSize.width / 6, visibleSize.height / 7);
+    select1->setPosition(1.5f * visibleSize.width / 6, visibleSize.height / 7);
     auto hero1 = Sprite::create("Scene/Room_AI/8bit.png");
     hero1->setScale(0.05f);
     hero1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -49,7 +49,7 @@ bool ChoiceAI::init()
 
     auto select2 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
     select1->setTag(2);
-    select2->setPosition(2.5 * visibleSize.width / 6, visibleSize.height / 7);
+    select2->setPosition(2.5f * visibleSize.width / 6, visibleSize.height / 7);
     auto hero2 = Sprite::create("Scene/Room_AI/GT_Max.png");
     hero2->setScale(0.05f);
     hero2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -60,7 +60,7 @@ bool ChoiceAI::init()
 
     auto select3 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
     select1->setTag(3);
-    select3->setPosition(3.5 * visibleSize.width / 6, visibleSize.height / 7);
+    select3->setPosition(3.5f * visibleSize.width / 6, visibleSize.height / 7);
     auto hero3 = Sprite::create("Scene/Room_AI/nita.png");
     hero3->setScale(0.05f);
     hero3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -71,7 +71,7 @@ bool ChoiceAI::init()
 
     auto select4 = Label::createWithTTF("select", "fonts/arial.ttf", 34);
     select1->setTag(4);
-    select4->setPosition(4.5 * visibleSize.width / 6, visibleSize.height / 7);
+    select4->setPosition(4.5f * visibleSize.width / 6, visibleSize.height / 7);
     auto hero4 = Sprite::create("Scene/Room_AI/Shelly_2.png");
     hero4->setScale(0.05f);
     hero4->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -80,6 +80,17 @@ bool ChoiceAI::init()
     //touchlisten(select4);
     this->addChild(hero4);
 
+    auto humanPlayer = Label::createWithTTF("HumanPlayer", "fonts/arial.ttf", 34);
+    humanPlayer->setColor(Color3B::RED);
+    humanPlayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+
+    std::vector<Label*> AIvec;
+    for (int i = 1; i <= 9; i++) {
+        auto AI = Label::createWithTTF("AI", "fonts/arial.ttf", 34);
+        AI->setColor(Color3B::RED);
+        AI->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+        AIvec.push_back(AI);
+    }
 
     enter->setColor(Color3B::BLACK);
     float x = origin.x + visibleSize.width - enter->getContentSize().width / 2;
@@ -96,17 +107,34 @@ bool ChoiceAI::init()
     nowButton = playervec[0];
     for (auto it = playervec.begin(); it != playervec.end(); it++)
     {
+        static auto aiit = AIvec.begin();
         static int i = 2;
         if (i < 7)
         {
-            (*it)->setPosition((i - 0.5) * visibleSize.width / 7, 5 * visibleSize.height / 7 + 30);
+
+            (*it)->setPosition((float)(i - 0.5) * visibleSize.width / 7.f, 5 * visibleSize.height / 7 + 30);
+            if (i == 2)
+            {
+                humanPlayer->setPosition(Vec2((*it)->getPosition().x, (*it)->getPosition().y + 50));
+                this->addChild(humanPlayer, 10);
+            }
+            else
+            {
+                (*aiit)->setPosition(Vec2((*it)->getPosition().x, (*it)->getPosition().y + 50));
+                this->addChild((*aiit), 10);
+            }
             this->addChild((*it));
         }
         if (i >= 7)
         {
-            (*it)->setPosition((i - 5 - 0.5) * visibleSize.width / 7, 4 * visibleSize.height / 7);
+            (*it)->setPosition((float)(i - 5 - 0.5) * visibleSize.width / 7.f, 4 * visibleSize.height / 7);
+            (*aiit)->setPosition((*it)->getPosition().x, (*it)->getPosition().y + 50);
+            this->addChild((*aiit), 10);
             this->addChild((*it));
         }
+
+        if (i != 2)
+            aiit++;
         i++;
     }
 
@@ -128,7 +156,7 @@ bool ChoiceAI::init()
         }
         else if (select2->getBoundingBox().containsPoint(t->getLocation()))
         {
-            heroPath[nowButton->getTag()] = "";
+            heroPath[nowButton->getTag()] = "hero/hero2_begin.png";
             auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
             selected->setPosition(nowButton->getPosition());
             this->addChild(selected);
@@ -136,7 +164,7 @@ bool ChoiceAI::init()
         }
         else if (select3->getBoundingBox().containsPoint(t->getLocation()))
         {
-            heroPath[nowButton->getTag()] = "";
+            heroPath[nowButton->getTag()] = "hero/hero3_begin.png";
             auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
             selected->setPosition(nowButton->getPosition());
             this->addChild(selected);
@@ -144,7 +172,7 @@ bool ChoiceAI::init()
         }
         else if (select4->getBoundingBox().containsPoint(t->getLocation()))
         {
-            heroPath[nowButton->getTag()] = "";
+            heroPath[nowButton->getTag()] = "hero/hero4_begin.png";
             auto selected = Sprite::create("Scene/Room_AI/icon_rank_6.png");
             selected->setPosition(nowButton->getPosition());
             this->addChild(selected);
@@ -170,6 +198,7 @@ bool ChoiceAI::init()
         }
     };
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listenter, this);
+    return true;
 }
 void ChoiceAI::nextone()
 {
@@ -232,7 +261,7 @@ void ChoiceAI::menuEnterCallback()
 {
     //Close the cocos2d-x game scene and quit the application
     auto battleScene = BattleScene::create();
-    Director::getInstance()->replaceScene(battleScene->createScene());
+    Director::getInstance()->replaceScene(battleScene->createScene(heroPath));
 
     /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
 

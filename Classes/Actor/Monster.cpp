@@ -1,5 +1,8 @@
 #include "Monster.h"
-#include"Hero\Shirley.h"
+#include"Hero/Shirley.h"
+#include"Hero/Bull.h"
+#include"Hero/Jack.h"
+#include"Hero/Nita.h"
 #include"Player.h"
 #include"Const/const.h"
 
@@ -23,11 +26,31 @@ Monster* Monster::create(const std::string& name, int maxMonster, Point startPos
 		monster->setXY(monster->getPosition().x, monster->getPosition().y);
 		//monster->setTag((monster->redomNum + 1) * 10 + 100);
 		//monster->setTag(MONSTER_TAG);
-		monster->bindPhysicsBody();
+		monster->setTypeStr(name);
 		//±ê¼Ç½ÇÉ«
-		Hero hero_;
-		Shirley shirley;
-		monster->bind_hero(shirley);
+		if (name == monster->str_1)
+		{
+
+			Shirley shirley;
+			monster->bind_hero(shirley);
+		}
+		else if (name == monster->str_2)
+		{
+			Nita nita;
+			monster->bind_hero(nita);
+
+		}
+		else if (name == monster->str_3)
+		{
+			Jack jack;
+			monster->bind_hero(jack);
+		}
+		else if (name == monster->str_4)
+		{
+			Bull bull;
+			monster->bind_hero(bull);
+		}
+		monster->bindPhysicsBody();
 		monster->setBlood();
 		monster->autorelease();
 	
@@ -37,26 +60,27 @@ Monster* Monster::create(const std::string& name, int maxMonster, Point startPos
 }
 bool Monster::bindPhysicsBody()
 {
-	auto physicsBody = cocos2d::PhysicsBody::createBox(this->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 1.0f, 0.0f));
+	auto physicsBody = cocos2d::PhysicsBody::createBox(m_monster->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 1.0f, 0.0f));
 	physicsBody->setDynamic(false);
 	physicsBody->setGravityEnable(false);
 	physicsBody->setRotationEnable(false);
 	physicsBody->setContactTestBitmask(MONSTER_CONTACT_MASK);
 	physicsBody->setCategoryBitmask(MONSTER_CATEGORY_MASK);
 	this->setPhysicsBody(physicsBody);
+	//log("555555555555");
 	this->setTag(MONSTER_TAG);
 	return true;
 }
 bool Monster::bindMonsterBulletPhysicsBody(Sprite* bullet)
 {
-	auto physicsBody = cocos2d::PhysicsBody::createBox(this->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 0.0f, 0.0f));
+	auto physicsBody = cocos2d::PhysicsBody::createBox(m_monster->getContentSize(), cocos2d::PhysicsMaterial(0.0f, 0.0f, 0.0f));
 	physicsBody->setDynamic(false);
 	physicsBody->setGravityEnable(false);
 	physicsBody->setRotationEnable(false);
 	physicsBody->setContactTestBitmask(MONSTER_BULLET_CONTACT_MASK);
 	physicsBody->setCategoryBitmask(MOSNTER_BULLET_CATEGORY_MASK);
 	bullet->setPhysicsBody(physicsBody);
-	
+	//log("6666666666666666");
 	return true;
 }
 void Monster::move()
@@ -222,26 +246,54 @@ void Monster::update_attack(float delata)
 		double nowlength = sqrt(pow(playerPos.x - offsetX, 2) + pow(playerPos.y - offsetY, 2));
 		double rate = 200 / nowlength;
 		const Vec2 route = Vec2((playerPos.x - offsetX) * rate, (playerPos.y - offsetY) * rate);
-		auto moveby = MoveBy::create(0.5f, route);
-		Animate* animate = MyAnimate::creatWeaponAnimate("fire", "fire", 1);
 		auto cache = SpriteFrameCache::getInstance();
+		SpriteFrame* spriteframe = nullptr;
 		cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
-
-		auto spriteframe =
-			SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		//log("weaponcache is done!");
+		if (TypeStr == str_1)
+		{
+			spriteframe =
+				SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		
+		}
+		else if (TypeStr == str_2)
+		{
+			spriteframe =
+				SpriteFrameCache::getInstance()->getSpriteFrameByName("fire2.png");
+		
+		}
+		else if (TypeStr == str_3)
+			spriteframe =
+			SpriteFrameCache::getInstance()->getSpriteFrameByName("fire3.png");
+		else if (TypeStr == str_4)
+			spriteframe =
+			SpriteFrameCache::getInstance()->getSpriteFrameByName("fire4.png");
 		auto bullet = Sprite::createWithSpriteFrame(spriteframe);
 		bindMonsterBulletPhysicsBody(bullet);
-		bullet->setTag(MONSTER_BULLET_TAG);
 		this->addChild(bullet);
 		auto arrived = [=]()
 		{
 			this->removeChild(bullet, true);
 		};
 		auto callfunc = CallFunc::create(arrived);
+		//log("%f,%f", heropos.x, heropos.y);
+		//bullet->setanchorpoint(point(0.5, 0.5));
+
 		bullet->setPosition(
 			m_monster->getPosition());
-
-		bullet->runAction(Sequence::create(moveby, animate, callfunc, NULL));
+		
+		for (int i = 1; i <= 20; i++)
+		{
+			auto moveby = MoveBy::create(0.5f, route / 20);
+			if (i != 20 && !collisionTest())
+			{
+				bullet->runAction(moveby);
+			}
+			else
+			{
+				bullet->runAction(Sequence::create(moveby, callfunc, NULL));
+			}
+		}
 
 	//}
 }

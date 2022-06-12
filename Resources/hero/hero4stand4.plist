@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>Hero4_stand4_1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{27,40}</string>
+                <key>spriteSourceSize</key>
+                <string>{27,40}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{27,40}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>hero4stand4.png</string>
+            <key>size</key>
+            <string>{27,40}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:1204653b40ff5411d58bd3c5ebb356ab:6426146e6895fa346bf47a3911bdd89f:e4773db1f6a204c4f8699d344b8fbee4$</string>
+            <key>textureFileName</key>
+            <string>hero4stand4.png</string>
+        </dict>
+    </dict>
+</plist>

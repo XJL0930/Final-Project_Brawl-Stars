@@ -61,11 +61,18 @@ list(APPEND GAME_SOURCE
 	 Classes/Scene/BattleScene.cpp
 	 Classes/Scene/Choice_ai.cpp
 	 Classes/Scene/PauseBox.cpp
+	 Classes/Scene/endScene.cpp
 	 Classes/Actor/Role.cpp
 	 Classes/Actor/Player.cpp
 	 Classes/Actor/MyAnimate.cpp
 	 Classes/Actor/Monster.cpp
 	 Classes/Hero/Shirley.cpp
+	 Classes/Hero/Nita.cpp
+	 Classes/Hero/Jack.cpp
+ 	 Classes/Hero/Bull.cpp
+	 Classes/Component/GameTimer.cpp
+	 
+
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -73,12 +80,18 @@ list(APPEND GAME_HEADER
      Classes/Scene/BattleScene.h
 	 Classes/Scene/Choice_ai.h
 	  Classes/Scene/PauseBox.h
+	  Classes/Scene/endScene.h
 	 Classes/Actor/Role.h
 	 Classes/Actor/Player.h
 	 Classes/Actor/MyAnimate.h
 	 Classes/Hero/Shirley.h
 	 Classes/Hero/Hero.h
 	 Classes/Actor/Monster.h
+	 Classes/Hero/Nita.h
+	 Classes/Hero/Jack.h
+	 Classes/Hero/Bull.h
+	 Classes/Component/GameTimer.h
+	 Classes/Const/const.h
 	 )
 
 if(ANDROID)

@@ -5,6 +5,7 @@
 #include"Const/const.h"
 #include"PauseBox.h"
 #include"Component/GameTimer.h"
+#include"endScene.h"
 #define MAXMONSTER 10
 
 BattleScene* BattleScene::create(int testIndex /* = 1 */)
@@ -65,8 +66,9 @@ void BattleScene::initUI()
 		this->addChild(pausebox);
 		});
 }
-Scene* BattleScene::createScene()
+Scene* BattleScene::createScene(std::map<int, std::string> heroPath)
 {
+	_heroPath = heroPath;
 	auto scene = Scene::createWithPhysics();
 
 	if (scene != nullptr)
@@ -199,7 +201,8 @@ void BattleScene::initPosition()
 }
 void BattleScene::addPlayer()
 {
-	std::string playerBeginFile = "hero/hero1_begin.png";
+	
+	std::string playerBeginFile = _heroPath[1];
 	my_player = Player::create(playerBeginFile, initPos[redomPos[0]]);
 	bool isPlayerLive = true;
 	bindPlayermap(my_player);
@@ -208,8 +211,8 @@ void BattleScene::addPlayer()
 	battlemap->addChild(my_player, 3);
 	//log("nnnnnnnnnnnnnnnnn%d", my_player->getParent()->getTag());
 	my_player->move();
-	if (isCurrentPlayerDie == true)
-		my_player->removeFromParent();
+	/*if (isCurrentPlayerDie == true)
+		my_player->removeFromParent();*/
 	//my_player->move();
 
 
@@ -219,10 +222,10 @@ void BattleScene::initMonster()
 	//因为要生成最多10个monster，所以直接设置为更新函数，而不是用for循环
 	for(int i=0;i<9;i++)
 	{
-		
+		std::string BeginStr = _heroPath[i + 1];
 		//log("has been going");
 		my_monster[i] = nullptr;
-		my_monster[i] = bindMonstermap(Monster::create("hero/hero1_begin.png", maxMonsterNum,
+		my_monster[i] = bindMonstermap(Monster::create(BeginStr, maxMonsterNum,
 			initPos[redomPos[currentMonsterNum+1]], currentMonsterNum),currentMonsterNum);
 		log("zhsooihawoefklsdfl");
 		//此处应该是做一个switch的英雄选择函数
@@ -292,12 +295,13 @@ void BattleScene::playerAttacked(Node* a, Node* b)
 {
 	int tag = b->getParent()->getTag();
 	isCurrentPlayerDie = my_player->isDie();
-	if (!isCurrentMonsterDie)
+	if (!isCurrentPlayerDie)
 	{
 		a->removeFromParentAndCleanup(true);
 		b->removeFromParentAndCleanup(true);
 		log("ooooooooooooooooooo");
-		//Direction::结束画面。
+		auto endScene = EndScene::create(currentMonsterNum);
+		Director::getInstance()->replaceScene(endScene);
 	}
 	else
 	{
@@ -326,8 +330,10 @@ void BattleScene::monsterAttacked(Node* a, Node* b)
 		
 	}
 	if (currentMonsterNum == 0)
-		log("now it's time to over the game");
-		//Direction::结束画面。
+	{
+		auto endScene = EndScene::create(currentMonsterNum);
+		Director::getInstance()->replaceScene(endScene);
+	}
 }
 
 Monster* BattleScene::what_monster_is(int tag)
@@ -357,12 +363,17 @@ void BattleScene::update_if_die(float dt) {
 				die.push_back(i);
 				--currentMonsterNum;
 			}
-	if (my_player->isDie())
-		my_player->removeAllChildrenWithCleanup(true);
+	if (my_player->isDie()|| currentMonsterNum == 0)
+	{
+		auto endScene = EndScene::create(currentMonsterNum);
+		Director::getInstance()->replaceScene(endScene);
+	}
+		
+	
 }
 
 bool BattleScene::dead(int tag) {
-	for (int i = 0; i < die.size(); ++i)
+	for (unsigned int i = 0; i < die.size(); ++i)
 		if (die[i] == tag)
 			return true;
 	return false;

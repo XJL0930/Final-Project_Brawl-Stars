@@ -9,84 +9,60 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-0.5,-2}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{34,56}</string>
+                <string>{45,60}</string>
                 <key>spriteSourceSize</key>
                 <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{39,1},{34,56}}</string>
+                <string>{{0,0},{45,60}}</string>
                 <key>textureRotated</key>
                 <false/>
-                <key>triangles</key>
-                <string>2 3 4 0 2 4 0 1 2</string>
-                <key>vertices</key>
-                <string>39 59 17 60 10 47 5 4 39 4</string>
-                <key>verticesUV</key>
-                <string>73 56 51 57 44 44 39 1 73 1</string>
             </dict>
             <key>Hero2_left_2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0.5,-2.5}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{32,53}</string>
+                <string>{45,60}</string>
                 <key>spriteSourceSize</key>
                 <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{109,1},{32,53}}</string>
+                <string>{{45,0},{45,60}}</string>
                 <key>textureRotated</key>
                 <false/>
-                <key>triangles</key>
-                <string>1 2 3 0 1 3</string>
-                <key>vertices</key>
-                <string>39 59 7 59 7 6 39 6</string>
-                <key>verticesUV</key>
-                <string>141 54 109 54 109 1 141 1</string>
             </dict>
             <key>Hero2_left_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{2,-0.5}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{39,59}</string>
+                <string>{45,60}</string>
                 <key>spriteSourceSize</key>
                 <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{39,59}}</string>
+                <string>{{90,0},{45,60}}</string>
                 <key>textureRotated</key>
                 <false/>
-                <key>triangles</key>
-                <string>0 3 4 2 3 0 2 0 1</string>
-                <key>vertices</key>
-                <string>44 28 31 58 11 60 5 5 32 1</string>
-                <key>verticesUV</key>
-                <string>40 28 27 58 7 60 1 5 28 1</string>
             </dict>
             <key>Hero2_left_4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0.5,-1.5}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{32,53}</string>
+                <string>{45,60}</string>
                 <key>spriteSourceSize</key>
                 <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{75,1},{32,53}}</string>
+                <string>{{135,0},{45,60}}</string>
                 <key>textureRotated</key>
                 <false/>
-                <key>triangles</key>
-                <string>1 2 3 0 1 3</string>
-                <key>vertices</key>
-                <string>39 58 7 58 7 5 39 5</string>
-                <key>verticesUV</key>
-                <string>107 54 75 54 75 1 107 1</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -100,9 +76,9 @@
             <key>realTextureFileName</key>
             <string>hero2left.png</string>
             <key>size</key>
-            <string>{142,61}</string>
+            <string>{180,60}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:df06c34949118f3d58832ab95d8414e9:a38f09f0de0f5e198aa1ae09495f940c:7392a30cd8e11718a5e8bc3be1936844$</string>
+            <string>$TexturePacker:SmartUpdate:8bdcd7a29393d80e4d584d6290f4efe9:a38f09f0de0f5e198aa1ae09495f940c:7392a30cd8e11718a5e8bc3be1936844$</string>
             <key>textureFileName</key>
             <string>hero2left.png</string>
         </dict>
