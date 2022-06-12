@@ -4,26 +4,20 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Hero2_right_1.png</key>
+            <key>Hero2_stand1_1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-1,-2}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{35,56}</string>
+                <string>{45,60}</string>
                 <key>spriteSourceSize</key>
                 <string>{45,60}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{35,56}}</string>
+                <string>{{0,0},{45,60}}</string>
                 <key>textureRotated</key>
                 <false/>
-                <key>triangles</key>
-                <string>2 3 4 0 2 4 0 1 2</string>
-                <key>vertices</key>
-                <string>34 59 14 60 4 33 10 4 39 4</string>
-                <key>verticesUV</key>
-                <string>31 56 11 57 1 30 7 1 36 1</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -37,9 +31,9 @@
             <key>realTextureFileName</key>
             <string>hero2stand1.png</string>
             <key>size</key>
-            <string>{37,58}</string>
+            <string>{45,60}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:7206ce9e599e042683e63ff5b688ba34:c02c4bc33b5068130bed7ad7816398bc:89ffb5b7f08e63085316dff89fd13e26$</string>
+            <string>$TexturePacker:SmartUpdate:7b7b36ff475af7e82be0b1578c221485:c02c4bc33b5068130bed7ad7816398bc:89ffb5b7f08e63085316dff89fd13e26$</string>
             <key>textureFileName</key>
             <string>hero2stand1.png</string>
         </dict>

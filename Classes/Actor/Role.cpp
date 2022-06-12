@@ -3,16 +3,9 @@
 
 void Role::bind_hero(Hero &hero) {
 	m_speed = hero.get_speed();
-	m_attackDistance = hero.get_attackDistance();
 	m_hp = hero.get_hp();
 	m_hp_max = hero.get_hp();
 	m_atk = hero.get_atk();
-	m_defence = hero.get_defence();
-	m_atkHateValue = hero.get_atkHateValue();
-	m_bulletImg = hero.get_bulletImg();
-	m_bulletSpeed = hero.get_bulletSpeed();
-	m_id = hero.get_id();
-	skillCD = hero.get_skillCD();
 	left_animate = hero.getLeftAnimate();
 	right_animate = hero.getRightAnimate();
 	up_animate = hero.getUpAnimate();
@@ -23,6 +16,10 @@ void Role::bind_hero(Hero &hero) {
 	stand_down = hero.getStandDownAnimate();
 	return;
 
+}
+void Role::setTypeStr(std::string str)
+{
+	TypeStr = str;
 }
 int Role::getHp()
 {
@@ -64,10 +61,7 @@ void Role::initMonsterPicture(Sprite* player)
 	this->addChild(m_monster);
 	return;
 }
-Sprite* Role::getPlayer()
-{
-	return m_hero;
-}
+
 
 void Role::setXY(int x, int y)
 {

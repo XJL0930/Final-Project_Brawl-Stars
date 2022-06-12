@@ -11,15 +11,9 @@ public:
 protected:
 	CC_SYNTHESIZE(std::string, heroName, _heroName);
 	CC_SYNTHESIZE(float, speed, _speed);
-	CC_SYNTHESIZE(INT32,attackDistance, _attackDistance);
 	CC_SYNTHESIZE(INT32, hp, _hp);
 	CC_SYNTHESIZE(INT32, atk, _atk);
-	CC_SYNTHESIZE(INT32, defence, _defence);
-	CC_SYNTHESIZE(INT32,atkHateValue, _atkHateValue);
-	CC_SYNTHESIZE(std::string,bulletImg, _bulletImg);
-	CC_SYNTHESIZE(INT32, bulletSpeed, _bulletSpeed);
-	CC_SYNTHESIZE(INT32, id, _id);
-	CC_SYNTHESIZE(float,skillCD,_skillCD); 
+
 	/*用于代表动画的类*/
 	Animate* left_animate;
 	Animate* right_animate;

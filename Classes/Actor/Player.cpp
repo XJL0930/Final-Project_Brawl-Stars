@@ -1,5 +1,8 @@
 #include "Player.h"
-#include"Hero\Shirley.h"
+#include"Hero/Shirley.h"
+#include"Hero/Bull.h"
+#include"Hero/Jack.h"
+#include"Hero/Nita.h"
 #include"Const/const.h"
 
 void Player::update(float delta) {
@@ -23,11 +26,32 @@ Player* Player::create(const std::string& name, const Point pos)
 		player->setXY(pos.x, pos.y);
 		//log("x:::%d  %d", offsetX,offsetY);
 		player->setPosition(pos);
+		player->setTypeStr(name);
 		//player->setTag(PLAYER_TAG);
 		//标记角色
 		//Hero hero_;
-		Shirley shirley;
-		player->bind_hero(shirley);
+		if (name == player->str_1)
+		{
+
+			Shirley shirley;
+			player->bind_hero(shirley);
+		}
+		else if (name == player->str_2)
+		{
+			Nita nita;
+			player->bind_hero(nita);
+			
+		}
+		else if (name == player->str_3)
+		{
+			Jack jack;
+			player->bind_hero(jack);
+		}
+		else if (name == player->str_4)
+		{
+			Bull bull;
+			player->bind_hero(bull);
+		}
 		player->autorelease();
 		player->setBlood();
 		return player;
@@ -336,40 +360,6 @@ void Player::move()
 
 
 
-
-
-	 // 回旋镖n 
-	 /*if (isMousePressed)
-	 {
-		 double nowlength = sqrt(pow(m_facingPoint.x - offsetX, 2) + pow(m_facingPoint.y - offsetY, 2));
-		 double rate = 200 / nowlength;
-		 const Vec2 route = Vec2((m_facingPoint.x - offsetX) * rate, (m_facingPoint.y - offsetY) * rate);
-		 auto moveby = MoveBy::create(0.5f, route);
-		 auto moveto = MoveTo::create(0.9f, Vec2(offsetX - originx, offsetY - originy));
-
-		 auto cache = SpriteFrameCache::getInstance();
-		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
-		 auto spriteframe =
-			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
-		 auto bullet3 = Sprite::createWithSpriteFrame(spriteframe);
-		 bullet3->setPosition(
-			 offsetX - originx,
-			 offsetY - originy);
-		 this->addChild(bullet3);
-		 bullet3->runAction(Sequence::create(moveby, moveto, NULL));
-	 }*/
-
-
-
-
-
-
-
-
-
-
-
-
 	 // 一个方向一直发射
 
 	 if (isMousePressed)
@@ -381,11 +371,27 @@ void Player::move()
 		 //把一次移动的moveby的长度微分，设置循环使其到达终点
 		// log("m_facingPoint.x:%f,m_facingPoint.y:%f", m_facingPoint.x, m_facingPoint.y);
 		 auto cache = SpriteFrameCache::getInstance();
+		 SpriteFrame* spriteframe = nullptr;
 		 cache->addSpriteFramesWithFile("weapon/fire.plist", "weapon/fire.png");
 		 //log("weaponcache is done!");
-
-		 auto spriteframe =
-			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+		 if (TypeStr == str_1)
+		 {
+			 spriteframe =
+				 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire1.png");
+			 log("fire1,fire1,fire1");
+		 }
+		 else if (TypeStr == str_2)
+		 {
+			 spriteframe =
+				 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire2.png");
+			 log("fire2,fire2,fire2");
+		 }
+		 else if (TypeStr == str_3)
+			 spriteframe =
+			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire3.png");
+		 else if (TypeStr == str_4)
+			 spriteframe =
+			 SpriteFrameCache::getInstance()->getSpriteFrameByName("fire4.png");
 		 auto bullet = Sprite::createWithSpriteFrame(spriteframe);
 		 bindMonsterBulletPhysicsBody(bullet);
 		 this->addChild(bullet);
