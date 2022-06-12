@@ -7,8 +7,9 @@
 #include"Actor/Monster.h"
 #include "ui/CocosGUI.h"
 #include "Const/const.h"
+#include "cocostudio\SimpleAudioEngine.h"
 using namespace cocos2d;
-
+using namespace CocosDenshion;
 class BattleScene : public Scene {
 public:
 	//¹¹Ôìº¯Êý

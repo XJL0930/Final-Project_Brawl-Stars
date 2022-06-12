@@ -2,7 +2,9 @@
 #ifndef __CHOICE_AI_H__
 #define __CHOICE_AI_H__
 #include "cocos2d.h"
+#include "cocostudio\SimpleAudioEngine.h"
 USING_NS_CC;
+using namespace CocosDenshion;
 class ChoiceAI : public cocos2d::Scene
 {
 public:

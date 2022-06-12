@@ -28,7 +28,8 @@ bool ChoiceAI::init()
     {
         return false;
     }
-
+    auto audio = SimpleAudioEngine::getInstance();
+    audio->playBackgroundMusic("Scene/choicemusic.mp3", true);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -260,6 +261,7 @@ void ChoiceAI::nextone()
 void ChoiceAI::menuEnterCallback()
 {
     //Close the cocos2d-x game scene and quit the application
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     auto battleScene = BattleScene::create();
     Director::getInstance()->replaceScene(battleScene->createScene(heroPath));
 
